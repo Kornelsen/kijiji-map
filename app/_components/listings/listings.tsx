@@ -10,7 +10,7 @@ import { TFilters, TInput, TListing } from "@/app/_types";
 import { ListingCards } from "./listing-cards";
 import { ListingsMap } from "./listings-map";
 import { Card } from "../shared/card";
-import { ScrapeButton } from "../listings/scrape-button";
+import { ScrapeButton } from "./scrape-button";
 import { Filters } from "./filters";
 
 export const Listings = () => {

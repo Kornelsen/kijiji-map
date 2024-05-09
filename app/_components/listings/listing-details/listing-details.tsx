@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { formatAddress } from "@/app/_utils/string";
 import { TListing } from "@/app/_types";
-import { Button } from "../shared/button";
+import { Button } from "../../shared";
 
 type Props = {
   listing: TListing;
@@ -19,7 +19,7 @@ export const ListingDetails = ({ size = "large", listing }: Props) => {
   return (
     <div className="flex flex-col gap-2 h-full">
       {/* TODO: Add image carousel */}
-      <div className={`h-${imgHeight}`}>
+      <div className={`h-[${imgHeight}px] w-[${imgWidth}px]`}>
         <Image
           src={
             listing.images[0] ||
@@ -27,7 +27,7 @@ export const ListingDetails = ({ size = "large", listing }: Props) => {
             "https://www.kijiji.ca/next-assets/images/not-found.jpg"
           }
           alt={`${listing.address} Image`}
-          className="object-cover object-center rounded-t"
+          className={`object-cover object-center rounded-t h-[${imgHeight}px] w-[${imgWidth}px]`}
           width={imgWidth}
           height={imgHeight}
         />

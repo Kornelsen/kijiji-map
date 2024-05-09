@@ -1,5 +1,5 @@
 import { TInput } from "@/app/_types";
-import { Button } from "../button";
+import { Button } from "../../shared";
 
 type Props<T> = {
   label: string;
