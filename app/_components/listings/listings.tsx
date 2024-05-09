@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { LngLatBounds } from "react-map-gl";
-import { categories, locations } from "kijiji-scraper";
 
 import { getListings, initalBounds } from "@/app/api/listings";
 import { TFilters, TInput, TListing } from "@/app/_types";
@@ -17,8 +16,6 @@ import { MapFilters } from "../map-filters";
 export const Listings = () => {
   const [filters, setFilters] = useState<TFilters>({
     bounds: initalBounds,
-    categoryId: categories.REAL_ESTATE.FOR_RENT.LONG_TERM_RENTALS.id,
-    locationId: locations.ONTARIO.TORONTO_GTA.CITY_OF_TORONTO.id,
     minPrice: null,
     maxPrice: null,
     bedrooms: [],

@@ -29,8 +29,6 @@ export type TListing = {
 
 export type TFilters = {
   bounds: LngLatBounds;
-  locationId?: number;
-  categoryId?: number;
   minPrice?: Nullable<number>;
   maxPrice?: Nullable<number>;
   minSqft?: number;
