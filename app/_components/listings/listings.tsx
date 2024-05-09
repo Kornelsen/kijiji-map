@@ -5,7 +5,7 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { LngLatBounds } from "react-map-gl";
 import { categories, locations } from "kijiji-scraper";
 
-import { getListings, initalBounds } from "@/app/page";
+import { getListings, initalBounds } from "@/app/api/listings";
 import { TFilters, TInput, TListing } from "@/app/_types";
 
 import { ListingCards } from "../listing-cards";
