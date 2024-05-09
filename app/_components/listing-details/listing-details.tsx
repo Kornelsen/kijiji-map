@@ -1,6 +1,7 @@
+import Image from "next/image";
 import { formatAddress } from "@/app/_utils/string";
-import { Button } from "../button";
 import { TListing } from "@/app/_types";
+import { Button } from "../button";
 
 type Props = {
   listing: TListing;
@@ -9,10 +10,8 @@ type Props = {
 
 export const ListingDetails = ({ size = "large", listing }: Props) => {
   const isSmall = size === "small";
-  const imgHeight = isSmall ? "[216px]" : "[288px]";
-  const imgWidth = isSmall ? "[225px]" : "[300px]";
-  const imageStyle = `w-${imgWidth} h-${imgHeight} object-cover object-center rounded-t`;
-  // const imageStyle = `w-[300px] h-[288px] object-cover object-center rounded-t`;
+  const imgHeight = isSmall ? 216 : 288;
+  const imgWidth = isSmall ? 225 : 300;
   const headingStyle = isSmall ? "text-lg" : "text-xl font-bold pt-2";
   const bodyStyle = isSmall ? "text-sm" : "text-md";
   const captionStyle = isSmall ? "text-xs" : "text-sm";
@@ -21,14 +20,16 @@ export const ListingDetails = ({ size = "large", listing }: Props) => {
     <div className="flex flex-col gap-2 h-full">
       {/* TODO: Add image carousel */}
       <div className={`h-${imgHeight}`}>
-        <img
+        <Image
           src={
             listing.images[0] ||
             // TODO: add to assets folder
             "https://www.kijiji.ca/next-assets/images/not-found.jpg"
           }
           alt={`${listing.address} Image`}
-          className={imageStyle}
+          className="object-cover object-center rounded-t"
+          width={imgWidth}
+          height={imgHeight}
         />
       </div>
       <div className="flex flex-col gap-2 px-5 pb-5 h-full">
