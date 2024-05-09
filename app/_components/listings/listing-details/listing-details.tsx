@@ -4,22 +4,22 @@ import { Button } from "../../shared";
 
 type Props = {
   listing: TListing;
-  headingStyle: string;
-  bodyStyle: string;
-  captionStyle: string;
+  headingTextStyle: string;
+  bodyTextStyle: string;
+  captionTextStyle: string;
 };
 
 export const ListingDetails = ({
   listing,
-  headingStyle,
-  bodyStyle,
-  captionStyle,
+  headingTextStyle,
+  bodyTextStyle,
+  captionTextStyle,
 }: Props) => {
   return (
-    <div className="flex flex-col gap-2 px-5 pb-5 h-full">
-      <h2 className={headingStyle}>${listing.price}</h2>
-      <p className={bodyStyle}>{formatAddress(listing.address)}</p>
-      <p className={captionStyle}>{`${listing.bedrooms ?? "?"} Beds • ${
+    <div className="flex flex-col gap-2">
+      <h2 className={headingTextStyle}>${listing.price}</h2>
+      <p className={bodyTextStyle}>{formatAddress(listing.address)}</p>
+      <p className={captionTextStyle}>{`${listing.bedrooms ?? "?"} Beds • ${
         listing.bathrooms ?? "?"
       } Baths${listing.sqft ? ` • ${listing.sqft} sqft` : ""}`}</p>
       <form action={listing.url} target="_blank" className="mt-auto">

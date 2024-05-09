@@ -1,6 +1,7 @@
 import { Popup } from "react-map-gl";
 import { TListing } from "@/app/_types";
-import { Listing } from "../listing";
+import { ListingImage } from "../listing-image";
+import { ListingDetails } from "../listing-details";
 
 type Props = {
   listing: TListing;
@@ -11,19 +12,19 @@ export const ListingPopup = ({ listing, onClose }: Props) => {
   return (
     <Popup
       anchor="top"
-      longitude={Number(listing.location.coordinates[0])}
-      latitude={Number(listing.location.coordinates[1])}
+      longitude={listing.location.coordinates[0]}
+      latitude={listing.location.coordinates[1]}
       onClose={onClose}
-      className="flex text-black p-0"
     >
-      <Listing
-        listing={listing}
-        headingStyle="text-lg font-bold pt-2"
-        bodyStyle="text-sm"
-        captionStyle="text-xs"
-        imageHeight={192}
-        imageWidth={200}
-      />
+      <div className="flex flex-col gap-3">
+        <ListingImage height={192} width={200} images={listing.images} />
+        <ListingDetails
+          listing={listing}
+          headingTextStyle="text-lg font-bold pt-2"
+          bodyTextStyle="text-sm"
+          captionTextStyle="test-xs"
+        />
+      </div>
     </Popup>
   );
 };
