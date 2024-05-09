@@ -1,7 +1,8 @@
+import { NextResponse } from "next/server";
 import { Db, Document, Filter } from "mongodb";
 import { Ad, ScraperType, search } from "kijiji-scraper";
-import { TListing } from "../_types";
-import mongoClient from "../_lib/mongodb";
+import { TListing } from "../../_types";
+import mongoClient from "../../_lib/mongodb";
 
 export async function POST(req: Request) {
   try {
@@ -13,6 +14,7 @@ export async function POST(req: Request) {
         locationId,
         categoryId,
         sortByName: "dateDesc",
+        minResults: 60,
       },
       { scraperType: ScraperType.HTML }
     );
@@ -37,9 +39,9 @@ export async function POST(req: Request) {
     deleteAll(db);
     console.log("Process finished successfully.");
 
-    return Response.json({ data: [] });
+    return NextResponse.json({ status: "success" });
   } catch (error) {
-    return Response.error();
+    return NextResponse.error();
   }
 }
 
@@ -72,10 +74,10 @@ export async function GET(req: Request) {
       .sort({ date: -1 })
       .toArray();
 
-    return Response.json({ data });
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching data:", error);
-    return Response.error();
+    return NextResponse.error();
   } finally {
     mongoClient.close();
   }

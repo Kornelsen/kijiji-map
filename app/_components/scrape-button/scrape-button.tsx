@@ -8,7 +8,7 @@ export const ScrapeButton = () => {
   const scrapeListings = async () => {
     setScraping(true);
     // TODO: use env var for api url
-    await fetch("http://localhost:3000/api", {
+    await fetch("http://localhost:3000/api/listings", {
       method: "POST",
       body: JSON.stringify({
         categoryId: categories.REAL_ESTATE.FOR_RENT.LONG_TERM_RENTALS.id,

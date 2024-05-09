@@ -11,10 +11,10 @@ export const initalBounds = new LngLatBounds([
 ]);
 
 export const getListings = async (bounds: LngLatBounds) => {
-  const uri = `http://localhost:3000/api?bounds=${bounds._sw.lng},${bounds._sw.lat},${bounds._ne.lng},${bounds._ne.lat}`;
+  const uri = `http://localhost:3000/api/listings?bounds=${bounds._sw.lng},${bounds._sw.lat},${bounds._ne.lng},${bounds._ne.lat}`;
   const resp = await fetch(uri);
   const result = await resp.json();
-  return result.data;
+  return result;
 };
 
 export default async function Home() {
