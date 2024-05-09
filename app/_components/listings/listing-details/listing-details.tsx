@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { formatAddress } from "@/app/_utils/string";
 import { TListing } from "@/app/_types";
-import { Button } from "../button";
+import { Button } from "../shared/button";
 
 type Props = {
   listing: TListing;

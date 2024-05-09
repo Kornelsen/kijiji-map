@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { TFilters, TInput } from "@/app/_types";
-import { CurrencyInput } from "../currency-input";
-import { Input } from "../input";
-import { MultipleSelect } from "../multiple-select";
-import { Accordion } from "../accordion";
+import { CurrencyInput } from "../../form/currency-input";
+import { Input } from "../../form/input";
+import { MultipleSelect } from "../../form/multiple-select";
+import { Accordion } from "../../shared/accordion";
 
 type Props = {
   handleChange: (input: TInput<unknown>) => void;
   filters: TFilters;
 };
 
-export const MapFilters = ({ handleChange, filters }: Props) => {
+export const Filters = ({ handleChange, filters }: Props) => {
   const [expanded, setExpanded] = useState(false);
   const handleClick = () => {
     setExpanded(!expanded);

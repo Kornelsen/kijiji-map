@@ -1,7 +1,7 @@
 "use client";
 import Map, { LngLatBounds, ViewStateChangeEvent, useMap } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Loader } from "../loader";
+import { Loader } from "../../shared/loader";
 
 type Props = {
   children?: React.ReactNode;

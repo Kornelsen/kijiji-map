@@ -1,5 +1,5 @@
 import { TListing } from "@/app/_types";
-import { Card } from "../card";
+import { Card } from "../../shared/card";
 import { ListingDetails } from "../listing-details";
 
 type Props = {

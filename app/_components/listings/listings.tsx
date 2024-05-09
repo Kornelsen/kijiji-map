@@ -7,11 +7,11 @@ import { LngLatBounds } from "react-map-gl";
 import { getListings, initalBounds } from "@/app/api/listings";
 import { TFilters, TInput, TListing } from "@/app/_types";
 
-import { ListingCards } from "../listing-cards";
-import { ListingsMap } from "../listings-map";
-import { Card } from "../card";
-import { ScrapeButton } from "../scrape-button";
-import { MapFilters } from "../map-filters";
+import { ListingCards } from "./listing-cards";
+import { ListingsMap } from "./listings-map";
+import { Card } from "../shared/card";
+import { ScrapeButton } from "../listings/scrape-button";
+import { Filters } from "./filters";
 
 export const Listings = () => {
   const [filters, setFilters] = useState<TFilters>({
@@ -40,7 +40,6 @@ export const Listings = () => {
   };
 
   const handleMoveEnd = async (bounds: LngLatBounds) => {
-    // TODO: find a way to ignore zoom
     setFilters({ ...filters, bounds });
   };
 
@@ -55,7 +54,7 @@ export const Listings = () => {
             <h1 className="text-2xl font-bold">Toronto Rentals</h1>
             <p className="font-semibold">{filteredListings.length} Listings</p>
           </div>
-          <MapFilters filters={filters} handleChange={handleFilterChange} />
+          <Filters filters={filters} handleChange={handleFilterChange} />
         </Card>
         <ListingCards listings={filteredListings} />
       </div>

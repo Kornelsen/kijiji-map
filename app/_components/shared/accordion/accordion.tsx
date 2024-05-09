@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Button } from "../button";
+import { Button } from "../shared/button";
 
 type Props = {
   label: string;
