@@ -1,6 +1,6 @@
 import { TListing } from "@/app/_types";
 import { Card } from "../../shared/card";
-import { ListingDetails } from "../listing-details";
+import { Listing } from "../listing";
 
 type Props = {
   listings?: TListing[];
@@ -11,7 +11,7 @@ export const ListingCards = ({ listings }: Props) => {
     <div className="grid grid-cols-1 2xl:grid-cols-2 gap-4 items-stretch">
       {listings?.map((listing) => (
         <Card key={listing.listingId} className="p-0 w-[300px] h-full">
-          <ListingDetails listing={listing} />
+          <Listing listing={listing} />
         </Card>
       ))}
     </div>

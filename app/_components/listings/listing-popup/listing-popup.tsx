@@ -1,6 +1,6 @@
 import { Popup } from "react-map-gl";
 import { TListing } from "@/app/_types";
-import { ListingDetails } from "../listing-details";
+import { Listing } from "../listing";
 
 type Props = {
   listing: TListing;
@@ -16,7 +16,14 @@ export const ListingPopup = ({ listing, onClose }: Props) => {
       onClose={onClose}
       className="flex text-black p-0"
     >
-      <ListingDetails listing={listing} size="small" />
+      <Listing
+        listing={listing}
+        headingStyle="text-lg font-bold pt-2"
+        bodyStyle="text-sm"
+        captionStyle="text-xs"
+        imageHeight={192}
+        imageWidth={200}
+      />
     </Popup>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "../shared/button";
+import { Button } from "../../shared";
 import { categories, locations } from "kijiji-scraper";
 
 export const ScrapeButton = () => {
