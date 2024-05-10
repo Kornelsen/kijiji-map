@@ -3,17 +3,18 @@ const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,
   C20.1,15.8,20.2,15.8,20.2,15.7z`;
 
 type Props = {
-  size?: number;
+	size?: number;
 };
 
 export const Pin = ({ size = 25 }: Props) => {
-  return (
-    <svg
-      height={size}
-      viewBox="0 0 24 24"
-      className="cursor-pointer fill-[#373373] stroke-white stroke-[2px] #373373 hover:brightness-150"
-    >
-      <path d={ICON} />
-    </svg>
-  );
+	return (
+		<svg
+			height={size}
+			viewBox="0 0 24 24"
+			className="cursor-pointer fill-[#373373] stroke-white stroke-[2px] #373373 hover:brightness-150"
+		>
+			<title>Map Pin</title>
+			<path d={ICON} />
+		</svg>
+	);
 };
