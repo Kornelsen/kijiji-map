@@ -1,8 +1,9 @@
-import { type Ad, ScraperType, search } from "kijiji-scraper";
-import type { Db, Document, Filter } from "mongodb";
+import { ScraperType, search } from "kijiji-scraper";
+import type { Db, Document } from "mongodb";
 import { NextResponse } from "next/server";
 import mongoClient from "../../_lib/mongodb";
-import type { TListing } from "../../_types";
+import type { TFilters, TListing } from "../../_types";
+import { getFilters, mapToListing } from "./utils";
 
 export async function POST(req: Request) {
 	try {
@@ -45,28 +46,20 @@ export async function POST(req: Request) {
 	}
 }
 
-// TODO: do we need to connect and close the client everytime?
 export async function GET(req: Request) {
 	try {
-		await mongoClient.connect();
 		// TODO: use env var
 		const db = mongoClient.db("kijiji-map");
 
 		const url = new URL(req.url);
 		const searchParams = new URLSearchParams(url.search);
-		const bounds = searchParams.get("bounds");
-		const location = bounds ? bounds.split(",") : null;
+		const filtersParam = searchParams.get("filters");
 
-		const filters: Filter<Document> = {};
-		if (location)
-			filters.location = {
-				$geoWithin: {
-					$box: [
-						[+location[0], +location[1]],
-						[+location[2], +location[3]],
-					],
-				},
-			};
+		if (!filtersParam) return NextResponse.error();
+
+		const decodedParams = decodeURIComponent(filtersParam);
+		const parsedParams: TFilters = JSON.parse(decodedParams);
+		const filters = getFilters(parsedParams);
 
 		const data = await db
 			.collection("listings")
@@ -78,35 +71,8 @@ export async function GET(req: Request) {
 	} catch (error) {
 		console.error("Error fetching data:", error);
 		return NextResponse.error();
-	} finally {
-		mongoClient.close();
 	}
 }
-
-// TODO: move function to another file
-const mapToListing = (ad: Ad) => {
-	return {
-		listingId: ad.id,
-		title: ad.title,
-		image: ad.image,
-		images: ad.images,
-		address: ad.attributes.location.mapAddress,
-		date: ad.date,
-		location: {
-			coordinates: [
-				ad.attributes.location.longitude,
-				ad.attributes.location.latitude,
-			],
-			type: "Point",
-		},
-		price: ad.attributes.price,
-		bedrooms: ad.attributes.numberbedrooms,
-		bathrooms: ad.attributes.numberbathrooms,
-		url: ad.url,
-		sqft: ad.attributes.areainfeet,
-		attributes: ad.attributes,
-	} as TListing;
-};
 
 const deleteAll = async (db: Db) => {
 	db.collection("pending-listings").deleteMany({});

@@ -1,8 +1,18 @@
-import type { LngLatBounds } from "mapbox-gl";
+import type { TFilters, TListing } from "@/app/_types";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
-export const getListings = async (bounds: LngLatBounds) => {
-	const uri = `http://localhost:3000/api/listings?bounds=${bounds._sw.lng},${bounds._sw.lat},${bounds._ne.lng},${bounds._ne.lat}`;
-	const resp = await fetch(uri);
+export const getListings = async (filters: TFilters) => {
+	const filtersParam = encodeURIComponent(JSON.stringify(filters));
+	const uri = `http://localhost:3000/api/listings?filters=${filtersParam}`;
+	const resp = await fetch(uri, { cache: "no-store" });
 	const result = await resp.json();
 	return result;
+};
+
+export const useListings = (filters: TFilters) => {
+	return useQuery<TListing[]>({
+		queryKey: ["listings", encodeURIComponent(JSON.stringify(filters))],
+		queryFn: () => getListings(filters),
+		placeholderData: keepPreviousData,
+	});
 };
