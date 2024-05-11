@@ -22,9 +22,14 @@ export const ListingDetails = ({
 			<p className={captionTextStyle}>{`${listing.bedrooms ?? "?"} Beds • ${
 				listing.bathrooms ?? "?"
 			} Baths${listing.sqft ? ` • ${listing.sqft} sqft` : ""}`}</p>
-			<form action={listing.url} target="_blank" className="mt-auto">
+			<a
+				href={listing.url}
+				target="_blank"
+				rel="noreferrer"
+				className="mt-auto"
+			>
 				<Button>View Listing</Button>
-			</form>
+			</a>
 		</div>
 	);
 };
