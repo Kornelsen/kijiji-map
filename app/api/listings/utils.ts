@@ -54,10 +54,16 @@ export const getFilters = ({
 	if (minSqft) filters.$and?.push({ sqft: { $gt: minSqft } });
 	if (bedrooms?.length) filters.$and?.push({ bedrooms: { $in: bedrooms } });
 	if (bathrooms?.length) filters.$and?.push({ bathrooms: { $in: bathrooms } });
-	if (misc?.length)
-		filters.$and?.push({
-			$and: misc.map((item) => ({ [`attributes.${item}`]: { $exists: true } })),
-		});
+	if (misc?.length) {
+		for (const miscFilter of misc) {
+			filters.$and?.push({
+				[`attributes.${miscFilter}`]: {
+					$exists: true,
+					$nin: [false, 0, ""],
+				},
+			});
+		}
+	}
 
 	return filters;
 };

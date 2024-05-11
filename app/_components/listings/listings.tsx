@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { LngLatBounds } from "react-map-gl";
+import { useDebouncedCallback } from "use-debounce";
 
 import type { TFilters, TInput } from "@/app/_types";
 import { initialFilters, useListings } from "@/app/api/listings";
@@ -17,9 +18,12 @@ export const Listings = () => {
 
 	const { data: listings = [], isFetching } = useListings(filters);
 
-	const handleFilterChange = ({ name, value }: TInput<unknown>) => {
-		setFilters({ ...filters, [name]: value });
-	};
+	const handleFilterChange = useDebouncedCallback(
+		({ name, value }: TInput<unknown>) => {
+			setFilters({ ...filters, [name]: value });
+		},
+		500,
+	);
 
 	const handleMoveEnd = async (bounds: LngLatBounds) => {
 		setFilters({ ...filters, bounds });
@@ -34,7 +38,10 @@ export const Listings = () => {
 						<h1 className="text-2xl font-bold">Toronto Rentals</h1>
 						<p className="font-semibold">{listings.length} Listings</p>
 					</div>
-					<Filters filters={filters} handleChange={handleFilterChange} />
+					<Filters
+						initialFilters={initialFilters}
+						onChange={handleFilterChange}
+					/>
 				</Card>
 				<ListingCards listings={listings} />
 			</div>

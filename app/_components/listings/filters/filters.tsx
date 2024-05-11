@@ -6,15 +6,22 @@ import { MultipleSelect } from "../../form/multiple-select";
 import { Accordion } from "../../shared/accordion";
 
 type Props = {
-	handleChange: (input: TInput<unknown>) => void;
-	filters: TFilters;
+	onChange: (input: TInput<unknown>) => void;
+	initialFilters: TFilters;
 };
 
-export const Filters = ({ handleChange, filters }: Props) => {
+export const Filters = ({ onChange, initialFilters }: Props) => {
+	const [filters, setFilters] = useState(initialFilters);
 	const [expanded, setExpanded] = useState(false);
 	const handleClick = () => {
 		setExpanded(!expanded);
 	};
+
+	const handleChange = ({ name, value }: TInput<unknown>) => {
+		setFilters({ ...filters, [name]: value });
+		onChange({ name, value });
+	};
+
 	return (
 		<Accordion label="Filters" expanded={expanded} onClick={handleClick}>
 			<div className="flex flex-col gap-2">
