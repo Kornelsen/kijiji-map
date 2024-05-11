@@ -32,7 +32,7 @@ export const Listings = () => {
 				<Card className="p-5 flex flex-col gap-2">
 					<div className="flex items-end justify-between">
 						<h1 className="text-2xl font-bold">Toronto Rentals</h1>
-						<p className="font-semibold">{listings.length}</p>
+						<p className="font-semibold">{listings.length} Listings</p>
 					</div>
 					<Filters filters={filters} handleChange={handleFilterChange} />
 				</Card>
