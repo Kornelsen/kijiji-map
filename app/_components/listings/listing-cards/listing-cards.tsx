@@ -5,18 +5,23 @@ import { ListingImage } from "../listing-image";
 
 type Props = {
 	listings?: TListing[];
+	onFocus: (listingId: string) => void;
+	onFocusEnd: () => void;
 };
 
-export const ListingCards = ({ listings }: Props) => {
+export const ListingCards = ({ listings, onFocus, onFocusEnd }: Props) => {
 	return (
 		<div className="grid grid-cols-1 2xl:grid-cols-2 gap-4 items-stretch">
 			{listings?.map((listing) => (
 				<Card
 					key={listing.listingId}
 					className="p-0 pb-5 w-[300px] h-full flex flex-col gap-3"
+					onFocus={() => onFocus(listing.listingId)}
+					onMouseEnter={() => onFocus(listing.listingId)}
+					onMouseLeave={onFocusEnd}
 				>
 					<ListingImage height={288} width={300} images={listing.images} />
-					<div className="px-5">
+					<div className="px-5 h-full">
 						<ListingDetails
 							listing={listing}
 							headingTextStyle="text-xl font-bold pt-2"

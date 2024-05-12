@@ -4,14 +4,19 @@ const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,
 
 type Props = {
 	size?: number;
+	focused?: boolean;
 };
 
-export const Pin = ({ size = 25 }: Props) => {
+export const Pin = ({ size = 25, focused }: Props) => {
+	let pinStyle =
+		"cursor-pointer fill-[#373373] stroke-white stroke-[2px] #373373 hover:brightness-200";
+
+	if (focused) pinStyle += " brightness-200";
 	return (
 		<svg
-			height={size}
+			height={focused ? size + 5 : size}
 			viewBox="0 0 24 24"
-			className="cursor-pointer fill-[#373373] stroke-white stroke-[2px] #373373 hover:brightness-150"
+			className={pinStyle}
 		>
 			<title>Map Pin</title>
 			<path d={ICON} />

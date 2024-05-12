@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { LngLatBounds } from "react-map-gl";
 import { useDebouncedCallback } from "use-debounce";
 
-import type { TFilters, TInput } from "@/app/_types";
+import type { Nullable, TFilters, TInput } from "@/app/_types";
 import { initialFilters, useListings } from "@/app/api/listings";
 
 import { Card } from "../shared/card";
@@ -15,6 +15,7 @@ import { ScrapeButton } from "./scrape-button";
 
 export const Listings = () => {
 	const [filters, setFilters] = useState<TFilters>(initialFilters);
+	const [focusedListing, setFocusedListing] = useState<Nullable<string>>(null);
 
 	const { data: listings = [], isFetching } = useListings(filters);
 
@@ -27,6 +28,14 @@ export const Listings = () => {
 
 	const handleMoveEnd = async (bounds: LngLatBounds) => {
 		setFilters({ ...filters, bounds });
+	};
+
+	const handleMouseEnterCard = (listingId: string) => {
+		setFocusedListing(listingId);
+	};
+
+	const handleMouseLeaveCard = () => {
+		setFocusedListing(null);
 	};
 
 	return (
@@ -43,12 +52,17 @@ export const Listings = () => {
 						onChange={handleFilterChange}
 					/>
 				</Card>
-				<ListingCards listings={listings} />
+				<ListingCards
+					listings={listings}
+					onFocus={handleMouseEnterCard}
+					onFocusEnd={handleMouseLeaveCard}
+				/>
 			</div>
 			<div className="flex grow">
 				<ListingsMap
 					listings={listings}
 					loading={isFetching}
+					focusedListing={focusedListing}
 					onMoveEnd={handleMoveEnd}
 				/>
 			</div>

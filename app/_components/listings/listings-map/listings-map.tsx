@@ -11,9 +11,15 @@ type Props = {
 	onMoveEnd: (bounds: LngLatBounds) => void;
 	listings?: TListing[];
 	loading?: boolean;
+	focusedListing: Nullable<string>;
 };
 
-export const ListingsMap = ({ listings, loading, onMoveEnd }: Props) => {
+export const ListingsMap = ({
+	listings,
+	loading,
+	focusedListing,
+	onMoveEnd,
+}: Props) => {
 	const [selected, setSelected] = useState<Nullable<TListing>>(null);
 
 	const handlePinClick = (listing: TListing) => {
@@ -27,7 +33,11 @@ export const ListingsMap = ({ listings, loading, onMoveEnd }: Props) => {
 	return (
 		<MapProvider>
 			<Mapbox onMoveEnd={onMoveEnd} loading={loading}>
-				<ListingPins listings={listings} onPinClick={handlePinClick} />
+				<ListingPins
+					listings={listings}
+					onPinClick={handlePinClick}
+					focusedListing={focusedListing}
+				/>
 				{selected && (
 					<ListingPopup listing={selected} onClose={handleClosePopup} />
 				)}

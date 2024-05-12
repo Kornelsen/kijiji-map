@@ -16,7 +16,7 @@ export const ListingDetails = ({
 	captionTextStyle,
 }: Props) => {
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2 h-full">
 			<h2 className={headingTextStyle}>${listing.price}</h2>
 			<p className={bodyTextStyle}>{formatAddress(listing.address)}</p>
 			<p className={captionTextStyle}>{`${listing.bedrooms ?? "?"} Beds • ${
