@@ -2,7 +2,7 @@
 	"crons": [
 		{
 			"path": "/api/cron/scrape",
-			"scedulue": "0 * * * *"
+			"scedulue": "0 9,17 * * *"
 		}
 	]
 }
