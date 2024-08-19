@@ -3,23 +3,23 @@ import { useState } from "react";
 import { Button } from "../../shared";
 
 export const ScrapeButton = () => {
-  const [scraping, setScraping] = useState(false);
+	const [scraping, setScraping] = useState(false);
 
-  const scrapeListings = async () => {
-    setScraping(true);
-    // TODO: use env var for api url
-    await fetch(`${process.env.NEXT_PUBLIC_API_URI}listings`, {
-      method: "POST",
-      body: JSON.stringify({
-        categoryId: categories.REAL_ESTATE.FOR_RENT.LONG_TERM_RENTALS.id,
-        locationId: locations.ONTARIO.TORONTO_GTA.CITY_OF_TORONTO.id,
-      }),
-    });
-    setScraping(false);
-  };
-  return (
-    <Button onClick={scrapeListings} disabled={scraping}>
-      Scrape
-    </Button>
-  );
+	const scrapeListings = async () => {
+		setScraping(true);
+		// TODO: use env var for api url
+		await fetch(`${process.env.NEXT_PUBLIC_API_URI}listings`, {
+			method: "POST",
+			body: JSON.stringify({
+				categoryId: categories.REAL_ESTATE.FOR_RENT.LONG_TERM_RENTALS.id,
+				locationId: locations.ONTARIO.TORONTO_GTA.CITY_OF_TORONTO.id,
+			}),
+		});
+		setScraping(false);
+	};
+	return (
+		<Button onClick={scrapeListings} disabled={scraping}>
+			Scrape
+		</Button>
+	);
 };

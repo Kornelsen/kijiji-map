@@ -8,18 +8,17 @@ type Props = {
 
 export const ListingImage = ({ height, width, images }: Props) => {
 	return (
-		<div className={`h-[${height}px] w-[${width}px]`}>
+		<div style={{ height, width: "100%" }}>
 			<Image
 				src={
 					images?.[0] ||
-					// TODO: add to assets folder
 					"https://www.kijiji.ca/next-assets/images/not-found.jpg"
 				}
 				alt="Listing Image"
-				className={`object-cover object-center rounded-t h-[${height}px] w-[${width}px]`}
+				className="object-cover object-center rounded-t"
 				width={width}
 				height={height}
-				style={{ height, width }}
+				style={{ height }}
 			/>
 		</div>
 	);

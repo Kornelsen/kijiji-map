@@ -15,12 +15,12 @@ export const ListingCards = ({ listings, onFocus, onFocusEnd }: Props) => {
 			{listings?.map((listing) => (
 				<Card
 					key={listing.listingId}
-					className="p-0 pb-5 w-[300px] h-full flex flex-col gap-3"
+					className="p-0 pb-5 w-full h-full flex flex-col gap-3"
 					onFocus={() => onFocus(listing.listingId)}
 					onMouseEnter={() => onFocus(listing.listingId)}
 					onMouseLeave={onFocusEnd}
 				>
-					<ListingImage height={288} width={300} images={listing.images} />
+					<ListingImage height={288} width={400} images={listing.images} />
 					<div className="px-5 h-full">
 						<ListingDetails
 							listing={listing}

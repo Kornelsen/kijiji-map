@@ -15,7 +15,7 @@ export default async function Home() {
 	});
 
 	return (
-		<main className="flex flex-col items-center justify-between ">
+		<main>
 			<HydrationBoundary state={dehydrate(queryClient)}>
 				<Listings />
 			</HydrationBoundary>
