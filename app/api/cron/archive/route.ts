@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import mongoClient from "../../../_lib/mongodb";
+import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
 
-export async function POST() {
+export const POST = verifySignatureAppRouter(async () => {
 	try {
 		console.info("Starting deletion process");
 		await mongoClient.connect();
@@ -22,4 +23,4 @@ export async function POST() {
 		console.error(e);
 		return NextResponse.error();
 	}
-}
+});
