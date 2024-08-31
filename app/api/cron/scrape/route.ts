@@ -6,7 +6,7 @@ import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
 import mongoClient from "../../../_lib/mongodb";
 import { mapToListing } from "../../listings/utils";
 
-export const GET = verifySignatureAppRouter(async () => {
+export const POST = verifySignatureAppRouter(async () => {
 	try {
 		console.info("Starting scraping process.");
 		const resp = await search(
@@ -41,6 +41,7 @@ export const GET = verifySignatureAppRouter(async () => {
 
 		return Response.json({ success: true });
 	} catch (error) {
+		console.error(error);
 		return NextResponse.error();
 	}
 });
