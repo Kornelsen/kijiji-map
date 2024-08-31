@@ -8,37 +8,7 @@ import { mapToListing } from "../../listings/utils";
 
 export const POST = verifySignatureAppRouter(async () => {
 	try {
-		console.info("Starting scraping process.");
-		const resp = await search(
-			{
-				locationId: locations.ONTARIO.TORONTO_GTA.CITY_OF_TORONTO.id,
-				categoryId: categories.REAL_ESTATE.FOR_RENT.LONG_TERM_RENTALS.id,
-				sortByName: "dateDesc",
-				minResults: 60,
-			},
-			{ scraperType: ScraperType.HTML },
-		);
-
-		const listings = resp.map(mapToListing);
-
-		await mongoClient.connect();
-		const db = mongoClient.db("kijiji-map");
-
-		const result = await db.collection("pending-listings").insertMany(listings);
-		console.info(`${result.insertedCount} pending listings were found.`);
-		console.info("Running agregation piepleine.");
-
-		const beforeCount = await db.collection("listings").countDocuments();
-
-		await db.collection("pending-listings").aggregate(mergePipeline).toArray();
-		console.info("Aggregation pipeline finished.");
-		const afterCount = await db.collection("listings").countDocuments();
-		console.info(`${afterCount - beforeCount} new listings were inserted.`);
-
-		console.info("Deleting pending listings.");
-		deleteAll(db);
-		console.info("Process finished successfully.");
-
+		backgroundProcess();
 		return Response.json({ success: true });
 	} catch (error) {
 		console.error(error);
@@ -60,3 +30,36 @@ const mergePipeline: Document[] = [
 		},
 	},
 ];
+
+const backgroundProcess = async () => {
+	console.info("Starting scraping process.");
+	const resp = await search(
+		{
+			locationId: locations.ONTARIO.TORONTO_GTA.CITY_OF_TORONTO.id,
+			categoryId: categories.REAL_ESTATE.FOR_RENT.LONG_TERM_RENTALS.id,
+			sortByName: "dateDesc",
+			minResults: 60,
+		},
+		{ scraperType: ScraperType.HTML },
+	);
+
+	const listings = resp.map(mapToListing);
+
+	await mongoClient.connect();
+	const db = mongoClient.db("kijiji-map");
+
+	const result = await db.collection("pending-listings").insertMany(listings);
+	console.info(`${result.insertedCount} pending listings were found.`);
+	console.info("Running agregation piepleine.");
+
+	const beforeCount = await db.collection("listings").countDocuments();
+
+	await db.collection("pending-listings").aggregate(mergePipeline).toArray();
+	console.info("Aggregation pipeline finished.");
+	const afterCount = await db.collection("listings").countDocuments();
+	console.info(`${afterCount - beforeCount} new listings were inserted.`);
+
+	console.info("Deleting pending listings.");
+	deleteAll(db);
+	console.info("Process finished successfully.");
+};
