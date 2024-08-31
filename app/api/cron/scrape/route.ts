@@ -1,17 +1,12 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { ScraperType, categories, locations, search } from "kijiji-scraper";
 import type { Db, Document } from "mongodb";
+import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
 
 import mongoClient from "../../../_lib/mongodb";
 import { mapToListing } from "../../listings/utils";
 
-export async function GET(request: NextRequest) {
-	const authHeader = request.headers.get("authorization");
-	if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-		return new Response("Unauthorized", {
-			status: 401,
-		});
-	}
+export const GET = verifySignatureAppRouter(async () => {
 	try {
 		console.info("Starting scraping process.");
 		const resp = await search(
@@ -48,7 +43,7 @@ export async function GET(request: NextRequest) {
 	} catch (error) {
 		return NextResponse.error();
 	}
-}
+});
 
 const deleteAll = async (db: Db) => {
 	db.collection("pending-listings").deleteMany({});

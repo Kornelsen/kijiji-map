@@ -41,9 +41,8 @@ export const Listings = () => {
 	return (
 		<div className="flex flex-row h-screen w-full">
 			<div className="flex flex-col gap-4 align-center p-2 overflow-y-auto w-[340px] 2xl:w-[650px]">
-				{/* <ScrapeButton /> */}
 				<Card className="p-5 flex flex-col gap-2">
-					<div className="flex items-end justify-between">
+					<div className="flex flex-col  justify-between">
 						<h1 className="text-2xl font-bold">Toronto Rentals</h1>
 						<p className="font-semibold">{listings.length} Listings</p>
 					</div>
