@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 		});
 	}
 	try {
-		console.log("Starting scraping process.");
+		console.info("Starting scraping process.");
 		const resp = await search(
 			{
 				locationId: locations.ONTARIO.TORONTO_GTA.CITY_OF_TORONTO.id,
@@ -30,19 +30,19 @@ export async function GET(request: NextRequest) {
 		const db = mongoClient.db("kijiji-map");
 
 		const result = await db.collection("pending-listings").insertMany(listings);
-		console.log(`${result.insertedCount} pending listings were found.`);
-		console.log("Running agregation piepleine.");
+		console.info(`${result.insertedCount} pending listings were found.`);
+		console.info("Running agregation piepleine.");
 
 		const beforeCount = await db.collection("listings").countDocuments();
 
 		await db.collection("pending-listings").aggregate(mergePipeline).toArray();
-		console.log("Aggregation pipeline finished.");
+		console.info("Aggregation pipeline finished.");
 		const afterCount = await db.collection("listings").countDocuments();
-		console.log(`${afterCount - beforeCount} new listings were inserted.`);
+		console.info(`${afterCount - beforeCount} new listings were inserted.`);
 
-		console.log("Deleting pending listings.");
+		console.info("Deleting pending listings.");
 		deleteAll(db);
-		console.log("Process finished successfully.");
+		console.info("Process finished successfully.");
 
 		return Response.json({ success: true });
 	} catch (error) {
