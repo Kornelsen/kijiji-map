@@ -29,6 +29,6 @@ const getButtonStyle = (variant: string, disabled: boolean) => {
 				disabled ? "opacity-50 cursor-not-allowed" : ""
 			}`;
 		case "outlined":
-			return "outline outline-2 outline-[#e5e7eb] rounded py-2 px-4 w-full";
+			return "outline outline-2 outline-[#e5e7eb] rounded py-2 px-4 w-full hover:outline-[#373373] focus:outline-[#373373]";
 	}
 };
