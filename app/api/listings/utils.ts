@@ -9,7 +9,7 @@ export const mapToListing = (ad: Ad) => {
 		image: ad.image,
 		images: ad.images,
 		address: ad.attributes.location.mapAddress,
-		date: ad.date,
+		date: ad.date.toDateString(),
 		location: {
 			coordinates: [
 				ad.attributes.location.longitude,
