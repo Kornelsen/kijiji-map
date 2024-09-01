@@ -6,19 +6,19 @@ type Props = {
 	images?: string[];
 };
 
-export const ListingImage = ({ height, width, images }: Props) => {
+export const ListingImage = ({ images, height, width }: Props) => {
 	return (
-		<div style={{ height, width: "100%" }}>
+		<div className="relative" style={{ height, width }}>
 			<Image
 				src={
 					images?.[0] ||
 					"https://www.kijiji.ca/next-assets/images/not-found.jpg"
 				}
 				alt="Listing Image"
-				className="object-cover object-center rounded-t"
-				width={width}
-				height={height}
-				style={{ height }}
+				objectFit="cover"
+				objectPosition="center"
+				className="rounded-tl"
+				fill
 			/>
 		</div>
 	);

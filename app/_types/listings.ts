@@ -3,7 +3,7 @@ export type TListing = {
 	image: string;
 	images: string[];
 	address: string;
-	date: Date;
+	date: string;
 	location: {
 		coordinates: [number, number];
 		type: "Point";

@@ -1,7 +1,7 @@
 import type { TListing } from "@/app/_types";
-import { Card } from "../../shared/card";
-import { ListingDetails } from "../listing-details";
-import { ListingImage } from "../listing-image";
+import { ListingCard } from "../listing-card/listing-card";
+import { useState } from "react";
+import { Card } from "../../shared";
 
 type Props = {
 	listings?: TListing[];
@@ -9,28 +9,27 @@ type Props = {
 	onFocusEnd: () => void;
 };
 
+const ITEMS_PER_PAGE = 10;
+
 export const ListingCards = ({ listings, onFocus, onFocusEnd }: Props) => {
+	const [page, setPage] = useState(0);
+
+	const listingsToDisplay = listings?.slice(
+		page * ITEMS_PER_PAGE,
+		ITEMS_PER_PAGE,
+	);
+
 	return (
-		<div className="grid grid-cols-1 2xl:grid-cols-2 gap-4 items-stretch">
-			{listings?.map((listing) => (
-				<Card
+		<div className="grid grid-cols-1 gap-3">
+			{listingsToDisplay?.map((listing) => (
+				<ListingCard
 					key={listing.listingId}
-					className="p-0 pb-5 w-full h-full flex flex-col gap-3"
-					onFocus={() => onFocus(listing.listingId)}
-					onMouseEnter={() => onFocus(listing.listingId)}
-					onMouseLeave={onFocusEnd}
-				>
-					<ListingImage height={288} width={400} images={listing.images} />
-					<div className="px-5 h-full">
-						<ListingDetails
-							listing={listing}
-							headingTextStyle="text-xl font-bold pt-2"
-							bodyTextStyle="text-md"
-							captionTextStyle="text-sm"
-						/>
-					</div>
-				</Card>
+					listing={listing}
+					onFocus={onFocus}
+					onFocusEnd={onFocusEnd}
+				/>
 			))}
+			<Card className="p-3">test</Card>
 		</div>
 	);
 };

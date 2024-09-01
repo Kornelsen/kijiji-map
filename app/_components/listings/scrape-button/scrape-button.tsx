@@ -8,12 +8,8 @@ export const ScrapeButton = () => {
 	const scrapeListings = async () => {
 		setScraping(true);
 		// TODO: use env var for api url
-		await fetch(`${process.env.NEXT_PUBLIC_API_URI}listings`, {
-			method: "POST",
-			body: JSON.stringify({
-				categoryId: categories.REAL_ESTATE.FOR_RENT.LONG_TERM_RENTALS.id,
-				locationId: locations.ONTARIO.TORONTO_GTA.CITY_OF_TORONTO.id,
-			}),
+		await fetch(`${process.env.NEXT_PUBLIC_API_URI}cron/scrape`, {
+			method: "GET",
 		});
 		setScraping(false);
 	};

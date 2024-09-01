@@ -18,11 +18,22 @@
 
 body {
   color: black;
-  background: #F1F1F1;
+  background: #f1f1f1;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  border-radius: 5px !important;
+  width: 316px !important;
+  height: 122px !important;
+}
+
+.mapboxgl-popup-close-button {
+  display: none;
 }

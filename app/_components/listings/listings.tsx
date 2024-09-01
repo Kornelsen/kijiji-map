@@ -3,7 +3,6 @@
 import { useState } from "react";
 import type { LngLatBounds } from "react-map-gl";
 import { useDebouncedCallback } from "use-debounce";
-
 import type { Nullable, TFilters, TInput } from "@/app/_types";
 import { initialFilters, useListings } from "@/app/api/listings";
 
@@ -20,29 +19,20 @@ export const Listings = () => {
 	const { data: listings = [], isFetching } = useListings(filters);
 
 	const handleFilterChange = useDebouncedCallback(
-		({ name, value }: TInput<unknown>) => {
-			setFilters({ ...filters, [name]: value });
-		},
+		({ name, value }: TInput<unknown>) =>
+			setFilters((prev) => ({ ...prev, [name]: value })),
 		500,
 	);
 
-	const handleMoveEnd = async (bounds: LngLatBounds) => {
-		setFilters({ ...filters, bounds });
-	};
-
-	const handleMouseEnterCard = (listingId: string) => {
-		setFocusedListing(listingId);
-	};
-
-	const handleMouseLeaveCard = () => {
-		setFocusedListing(null);
+	const handleMoveEnd = (bounds: LngLatBounds) => {
+		setFilters((prev) => ({ ...prev, bounds }));
 	};
 
 	return (
 		<div className="flex flex-row h-screen w-full">
-			<div className="flex flex-col gap-4 align-center p-2 overflow-y-auto w-[340px] 2xl:w-[650px]">
-				<Card className="p-5 flex flex-col gap-2">
-					<div className="flex flex-col  justify-between">
+			<div className="flex flex-col gap-3 py-3 px-3 overflow-y-auto w-[380px]">
+				<Card className="p-4 flex flex-col gap-2">
+					<div className="flex flex-col justify-between">
 						<h1 className="text-2xl font-bold">Toronto Rentals</h1>
 						<p className="font-semibold">{listings.length} Listings</p>
 					</div>
@@ -53,8 +43,8 @@ export const Listings = () => {
 				</Card>
 				<ListingCards
 					listings={listings}
-					onFocus={handleMouseEnterCard}
-					onFocusEnd={handleMouseLeaveCard}
+					onFocus={setFocusedListing}
+					onFocusEnd={() => setFocusedListing(null)}
 				/>
 			</div>
 			<div className="flex grow">
