@@ -6,20 +6,20 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Kijiji Map",
-	description: "Map View for Kijiji",
+  title: "Kijiji Map",
+  description: "Map View for Kijiji",
 };
 
 export default function RootLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	return (
-		<html lang="en">
-			<Providers>
-				<body className={inter.className}>{children}</body>
-			</Providers>
-		</html>
-	);
+  return (
+    <html lang="en">
+      <Providers>
+        <body className={inter.className}>{children}</body>
+      </Providers>
+    </html>
+  );
 }
