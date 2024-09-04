@@ -8,8 +8,8 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../../ui/accordion";
-import { Button } from "../../shared";
 import type { TFilters, TInput } from "@/app/_types";
+import { Slider } from "../../ui/slider";
 
 type Props = {
   onChange: (input: TInput<unknown>) => void;
@@ -27,11 +27,9 @@ export const Filters = ({ onChange, initialFilters }: Props) => {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="filters">
-        <Button fullWidth={false}>
-          <AccordionTrigger className="text-md p-0 hover:no-underline">
-            Filters
-          </AccordionTrigger>
-        </Button>
+        <AccordionTrigger className="text-white text-md p-0 hover:no-underline rounded bg-[#373373] px-4 py-2">
+          Filters
+        </AccordionTrigger>
         <AccordionContent className="flex flex-col gap-2 pt-4 px-1">
           <MultipleSelect<number>
             name="bedrooms"
@@ -47,35 +45,65 @@ export const Filters = ({ onChange, initialFilters }: Props) => {
             selected={filters.bathrooms}
             onChange={handleChange}
           />
-          <CurrencyInput
-            name="minPrice"
-            label="Min Price"
-            placeholder="$0"
-            value={filters.minPrice}
-            onChange={handleChange}
+          <div className="flex gap-2">
+            <CurrencyInput
+              name="minPrice"
+              label="Min Price"
+              placeholder="$0"
+              value={filters.minPrice}
+              onChange={handleChange}
+            />
+            <CurrencyInput
+              name="maxPrice"
+              label="Max Price"
+              placeholder="Unlimited"
+              value={filters.maxPrice}
+              onChange={handleChange}
+            />
+          </div>
+          <Slider
+            min={0}
+            max={10000}
+            value={[filters.minPrice || 0, filters.maxPrice || 10000]}
+            step={50}
+            onValueChange={([min, max]) => {
+              max === filters.maxPrice
+                ? handleChange({ name: "minPrice", value: min })
+                : handleChange({ name: "maxPrice", value: max });
+            }}
+            className="py-2"
+            double
           />
-          <CurrencyInput
-            name="maxPrice"
-            label="Max Price"
-            placeholder="Unlimited"
-            value={filters.maxPrice}
-            onChange={handleChange}
-          />
-          <Input
-            name="minSqft"
-            label="Min Sqft"
-            placeholder="0"
-            type="number"
-            value={null}
-            onChange={handleChange}
-          />
-          <Input
-            name="maxSqft"
-            label="Max Sqft"
-            placeholder="Unlimited"
-            type="number"
-            value={null}
-            onChange={handleChange}
+          <div className="flex gap-2">
+            <Input
+              name="minSqft"
+              label="Min Sqft"
+              placeholder="0"
+              type="number"
+              value={filters.minSqft}
+              onChange={handleChange}
+            />
+            <Input
+              name="maxSqft"
+              label="Max Sqft"
+              placeholder="Unlimited"
+              type="number"
+              value={filters.maxSqft}
+              onChange={handleChange}
+            />
+          </div>
+          <Slider
+            min={0}
+            max={2000}
+            value={[filters.minSqft || 0, filters.maxSqft || 2000]}
+            step={50}
+            onValueChange={([min, max]) => {
+              max === filters.maxSqft
+                ? handleChange({ name: "minSqft", value: min })
+                : handleChange({ name: "maxSqft", value: max });
+            }}
+            className="py-2"
+            double
           />
           <MultipleSelect<string>
             name="misc"
