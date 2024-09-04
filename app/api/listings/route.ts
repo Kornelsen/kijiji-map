@@ -25,6 +25,9 @@ export async function GET(req: Request) {
       .collection("listings")
       .find<TListing>(filters)
       .sort({ date: -1 })
+      .project({
+        attributes: 0,
+      })
       .toArray();
 
     return NextResponse.json(data);
