@@ -29,8 +29,8 @@ export const Listings = () => {
 	};
 
 	return (
-		<div className="flex flex-row h-screen w-full">
-			<div className="flex flex-col gap-3 py-3 px-3 overflow-y-auto w-[380px]">
+		<div className="flex flex-row h-screen w-full overflow-hidden">
+			<div className="flex flex-col gap-3 py-3 px-3 overflow-y-auto w-[450px]">
 				<Card className="p-4 flex flex-col gap-2">
 					<div className="flex flex-col justify-between">
 						<h1 className="text-2xl font-bold">Toronto Rentals</h1>
