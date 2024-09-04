@@ -10,9 +10,16 @@
 		"format": "biome format --write app/"
 	},
 	"dependencies": {
+		"@radix-ui/react-dialog": "^1.1.1",
+		"@radix-ui/react-icons": "^1.3.0",
+		"@radix-ui/react-slot": "^1.1.0",
 		"@tanstack/react-query": "^5.32.0",
 		"@upstash/qstash": "^2.6.5",
+		"class-variance-authority": "^0.7.0",
+		"clsx": "^2.1.1",
+		"embla-carousel-react": "^8.2.0",
 		"kijiji-scraper": "^6.3.5",
+		"lucide-react": "^0.437.0",
 		"mapbox-gl": "^3.3.0",
 		"mongodb": "^6.5.0",
 		"next": "14.2.2",
@@ -20,6 +27,8 @@
 		"react-dom": "^18",
 		"react-map-gl": "^7.1.7",
 		"react-text-mask": "^5.5.0",
+		"tailwind-merge": "^2.5.2",
+		"tailwindcss-animate": "^1.0.7",
 		"text-mask-addons": "^3.8.0",
 		"use-debounce": "^10.0.0"
 	},
