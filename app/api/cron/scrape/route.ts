@@ -2,16 +2,10 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ScraperType, categories, locations, search } from "kijiji-scraper";
 import type { Db, Document } from "mongodb";
 
-import mongoClient from "../../../_lib/mongodb";
+import mongoClient from "@/lib/mongodb";
 import { mapToListing } from "../../listings/utils";
 
 export async function GET(request: NextRequest) {
-	const authHeader = request.headers.get("authorization");
-	if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-		return new Response("Unauthorized", {
-			status: 401,
-		});
-	}
 	try {
 		console.info("Starting scraping process.");
 		const resp = await search(

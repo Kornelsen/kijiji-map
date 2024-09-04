@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import mongoClient from "../../../_lib/mongodb";
+import mongoClient from "@/lib/mongodb";
 import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
 
 export const POST = verifySignatureAppRouter(async () => {

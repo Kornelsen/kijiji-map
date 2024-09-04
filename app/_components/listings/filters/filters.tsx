@@ -40,40 +40,37 @@ export const Filters = ({ onChange, initialFilters }: Props) => {
 					selected={filters.bathrooms}
 					onChange={handleChange}
 				/>
-				<div className="flex flex-col 2xl:flex-row gap-2">
-					<CurrencyInput
-						name="minPrice"
-						label="Min Price"
-						placeholder="$0"
-						value={filters.minPrice}
-						onChange={handleChange}
-					/>
-					<CurrencyInput
-						name="maxPrice"
-						label="Max Price"
-						placeholder="Unlimited"
-						value={filters.maxPrice}
-						onChange={handleChange}
-					/>
-				</div>
-				<div className="flex flex-col 2xl:flex-row gap-2">
-					<Input
-						name="minSqft"
-						label="Min Sqft"
-						placeholder="0"
-						type="number"
-						value={null}
-						onChange={handleChange}
-					/>
-					<Input
-						name="maxSqft"
-						label="Max Sqft"
-						placeholder="Unlimited"
-						type="number"
-						value={null}
-						onChange={handleChange}
-					/>
-				</div>
+				<CurrencyInput
+					name="minPrice"
+					label="Min Price"
+					placeholder="$0"
+					value={filters.minPrice}
+					onChange={handleChange}
+				/>
+				<CurrencyInput
+					name="maxPrice"
+					label="Max Price"
+					placeholder="Unlimited"
+					value={filters.maxPrice}
+					onChange={handleChange}
+				/>
+
+				<Input
+					name="minSqft"
+					label="Min Sqft"
+					placeholder="0"
+					type="number"
+					value={null}
+					onChange={handleChange}
+				/>
+				<Input
+					name="maxSqft"
+					label="Max Sqft"
+					placeholder="Unlimited"
+					type="number"
+					value={null}
+					onChange={handleChange}
+				/>
 				<MultipleSelect<string>
 					name="misc"
 					options={miscOptions}

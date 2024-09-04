@@ -6,13 +6,13 @@ import {
 	CarouselItem,
 	CarouselNext,
 	CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "../../ui/carousel";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTrigger,
-} from "@/components/ui/dialog";
+} from "../../ui/dialog";
 import { Button } from "../../shared";
 import { useState } from "react";
 

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import mongoClient from "../../_lib/mongodb";
+import mongoClient from "@/lib/mongodb";
 import type { TFilters, TListing } from "../../_types";
 import { getFilters } from "./utils";
 

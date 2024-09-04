@@ -6,7 +6,7 @@ import {
 	PaginationLink,
 	PaginationNext,
 	PaginationPrevious,
-} from "@/components/ui/pagination";
+} from "../../ui/pagination";
 
 type Props = {
 	page: number;
@@ -14,7 +14,7 @@ type Props = {
 	handlePageChange: (page: number) => void;
 };
 
-const PAGINATION_OPTIONS = 6;
+const PAGINATION_OPTIONS = 7;
 
 export const PaginationControl = ({
 	page,
@@ -39,7 +39,6 @@ export const PaginationControl = ({
 				<PaginationItem>
 					<PaginationPrevious onClick={handlePrevPage} />
 				</PaginationItem>
-				{page > 0 && <PaginationEllipsis />}
 				{Array.from({ length: PAGINATION_OPTIONS }).map((_, i) => {
 					let index = i + 1 + page;
 					const remainingPages = totalPages - page;
