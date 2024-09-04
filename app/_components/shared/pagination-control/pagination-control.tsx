@@ -46,7 +46,7 @@ export const PaginationControl = ({
 					if (remainingPages < PAGINATION_OPTIONS) {
 						index = index - (PAGINATION_OPTIONS - remainingPages);
 					}
-					if (index > totalPages) return null;
+					if (index > totalPages || index < 1) return null;
 					return (
 						<PaginationItem key={index}>
 							<PaginationLink
