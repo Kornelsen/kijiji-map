@@ -3,7 +3,13 @@ import { useState } from "react";
 import { CurrencyInput } from "../../form/currency-input";
 import { Input } from "../../form/input";
 import { MultipleSelect } from "../../form/multiple-select";
-import { Accordion } from "../../shared/accordion";
+import {
+	Accordion,
+	AccordionItem,
+	AccordionTrigger,
+	AccordionContent,
+} from "../../ui/accordion";
+import { Button } from "../../shared";
 
 type Props = {
 	onChange: (input: TInput<unknown>) => void;
@@ -23,63 +29,68 @@ export const Filters = ({ onChange, initialFilters }: Props) => {
 	};
 
 	return (
-		<Accordion label="Filters" expanded={expanded} onClick={handleClick}>
-			<div className="flex flex-col gap-2">
-				<hr className="my-2" />
-				<MultipleSelect<number>
-					name="bedrooms"
-					options={bedOptions}
-					label="Number of bedrooms"
-					selected={filters.bedrooms}
-					onChange={handleChange}
-				/>
-				<MultipleSelect<number>
-					name="bathrooms"
-					options={bathOptions}
-					label="Number of bathrooms"
-					selected={filters.bathrooms}
-					onChange={handleChange}
-				/>
-				<CurrencyInput
-					name="minPrice"
-					label="Min Price"
-					placeholder="$0"
-					value={filters.minPrice}
-					onChange={handleChange}
-				/>
-				<CurrencyInput
-					name="maxPrice"
-					label="Max Price"
-					placeholder="Unlimited"
-					value={filters.maxPrice}
-					onChange={handleChange}
-				/>
+		<Accordion type="single" collapsible>
+			<AccordionItem value="filters">
+				<Button fullWidth={false}>
+					<AccordionTrigger className="text-md p-0 hover:no-underline">
+						Filters
+					</AccordionTrigger>
+				</Button>
+				<AccordionContent className="flex flex-col gap-2 pt-4 px-1">
+					<MultipleSelect<number>
+						name="bedrooms"
+						options={bedOptions}
+						label="Number of bedrooms"
+						selected={filters.bedrooms}
+						onChange={handleChange}
+					/>
+					<MultipleSelect<number>
+						name="bathrooms"
+						options={bathOptions}
+						label="Number of bathrooms"
+						selected={filters.bathrooms}
+						onChange={handleChange}
+					/>
+					<CurrencyInput
+						name="minPrice"
+						label="Min Price"
+						placeholder="$0"
+						value={filters.minPrice}
+						onChange={handleChange}
+					/>
+					<CurrencyInput
+						name="maxPrice"
+						label="Max Price"
+						placeholder="Unlimited"
+						value={filters.maxPrice}
+						onChange={handleChange}
+					/>
 
-				<Input
-					name="minSqft"
-					label="Min Sqft"
-					placeholder="0"
-					type="number"
-					value={null}
-					onChange={handleChange}
-				/>
-				<Input
-					name="maxSqft"
-					label="Max Sqft"
-					placeholder="Unlimited"
-					type="number"
-					value={null}
-					onChange={handleChange}
-				/>
-				<MultipleSelect<string>
-					name="misc"
-					options={miscOptions}
-					label="Miscellaneous"
-					selected={filters.misc}
-					onChange={handleChange}
-				/>
-				<hr className="my-2" />
-			</div>
+					<Input
+						name="minSqft"
+						label="Min Sqft"
+						placeholder="0"
+						type="number"
+						value={null}
+						onChange={handleChange}
+					/>
+					<Input
+						name="maxSqft"
+						label="Max Sqft"
+						placeholder="Unlimited"
+						type="number"
+						value={null}
+						onChange={handleChange}
+					/>
+					<MultipleSelect<string>
+						name="misc"
+						options={miscOptions}
+						label="Miscellaneous"
+						selected={filters.misc}
+						onChange={handleChange}
+					/>
+				</AccordionContent>
+			</AccordionItem>
 		</Accordion>
 	);
 };
