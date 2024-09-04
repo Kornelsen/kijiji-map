@@ -41,7 +41,11 @@ export const PaginationControl = ({
 				</PaginationItem>
 				{page > 0 && <PaginationEllipsis />}
 				{Array.from({ length: PAGINATION_OPTIONS }).map((_, i) => {
-					const index = i + 1 + page;
+					let index = i + 1 + page;
+					const remainingPages = totalPages - page;
+					if (remainingPages < PAGINATION_OPTIONS) {
+						index = index - (PAGINATION_OPTIONS - remainingPages);
+					}
 					if (index > totalPages) return null;
 					return (
 						<PaginationItem key={index}>
