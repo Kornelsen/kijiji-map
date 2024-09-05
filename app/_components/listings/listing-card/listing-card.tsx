@@ -22,7 +22,7 @@ export const ListingCard = ({ listing, onFocus, onFocusEnd }: Props) => (
     <div className="flex flex-row w-full">
       <div className="flex-1">
         <ImagesDialog
-          id={listing._id}
+          id={listing.listingId}
           image={listing.image}
           title={listing.title}
         />
