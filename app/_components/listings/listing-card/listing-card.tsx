@@ -1,8 +1,8 @@
-import { Card } from "../../shared";
 import type { TListing } from "@/app/_types";
 import { formatAddress } from "@/app/_utils/string";
 import { getRelativeTime } from "@/app/_utils/date";
-import { ImageCarousel } from "../listing-image/listing-image";
+import { ImagesDialog } from "../images-dialog";
+import { Card } from "../../shared";
 
 type Props = {
   listing: TListing;
@@ -21,12 +21,10 @@ export const ListingCard = ({ listing, onFocus, onFocusEnd }: Props) => (
     <div className="relative overflow-hidden before:absolute before:top-0 before:cont" />
     <div className="flex flex-row w-full">
       <div className="flex-1">
-        <ImageCarousel
-          title={formatAddress(listing.address)}
-          height={127}
-          width={179}
-          images={listing.images}
-          listingUrl={listing.url}
+        <ImagesDialog
+          id={listing._id}
+          image={listing.image}
+          title={listing.title}
         />
       </div>
       <div className="flex flex-col py-2 px-3 h-full w-full">

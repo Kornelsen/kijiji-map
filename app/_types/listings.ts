@@ -1,4 +1,5 @@
 export type TListing = {
+  _id: string;
   title: string;
   image: string;
   images: string[];

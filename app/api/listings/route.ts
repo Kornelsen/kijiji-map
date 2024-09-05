@@ -27,6 +27,7 @@ export async function GET(req: Request) {
       .sort({ date: -1 })
       .project({
         attributes: 0,
+        images: 0,
       })
       .toArray();
 
