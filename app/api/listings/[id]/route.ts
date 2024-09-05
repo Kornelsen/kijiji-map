@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
 import mongoClient from "@/lib/mongodb";
 import type { TListing } from "@/app/_types";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   if (!params.id) {
     return new Response("Bad Request", {
@@ -17,11 +16,9 @@ export async function GET(
     // TODO: use env var
     const db = mongoClient.db("kijiji-map");
 
-    const objectId = ObjectId.createFromHexString(params.id);
-
     const data = await db
       .collection("listings")
-      .findOne<TListing>({ _id: objectId });
+      .findOne<TListing>({ listingId: params.id });
 
     return NextResponse.json(data);
   } catch (error) {
