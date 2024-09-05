@@ -148,3 +148,14 @@ const miscOptions = [
   { label: "Elevator", value: "elevator" },
   { label: "Concierge", value: "concierge" },
 ];
+
+const getActiveFiltersCount = (filters: TFilters) => {
+  const excludedFilters = ["bounds", "misc"];
+  const activeFilters = Object.entries(filters).filter(
+    ([key, value]) =>
+      !excludedFilters.includes(key) &&
+      (Array.isArray(value) ? value.length : value),
+  );
+
+  return activeFilters.length + filters.misc.length;
+};
