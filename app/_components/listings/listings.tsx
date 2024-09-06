@@ -1,31 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import type { LngLatBounds } from "react-map-gl";
-import { useDebouncedCallback } from "use-debounce";
-import type { TFilters, TInput } from "@/app/_types";
-import { initialFilters, useListings } from "@/app/api/listings";
+import { useListings } from "@/app/api/listings";
 
 import { Card } from "../shared/card";
 import { Filters } from "./filters";
 import { ListingCards } from "./listing-cards";
 import { ListingsMap } from "./listings-map";
 import { ScrapeButton } from "./scrape-button";
+import { useFiltersStore } from "@/app/store";
 
 export const Listings = () => {
-  const [filters, setFilters] = useState<TFilters>(initialFilters);
-
+  const filters = useFiltersStore((state) => state.filters);
   const { data: listings = [], isFetching } = useListings(filters);
-
-  const handleFilterChange = useDebouncedCallback(
-    ({ name, value }: TInput<unknown>) =>
-      setFilters((prev) => ({ ...prev, [name]: value })),
-    500,
-  );
-
-  const handleMoveEnd = (bounds: LngLatBounds) => {
-    setFilters((prev) => ({ ...prev, bounds }));
-  };
 
   return (
     <div className="flex flex-row h-screen w-full overflow-hidden">
@@ -35,19 +21,12 @@ export const Listings = () => {
             <h1 className="text-2xl font-bold">Toronto Rentals</h1>
             <p className="font-semibold">{listings.length} Listings</p>
           </div>
-          <Filters
-            initialFilters={initialFilters}
-            onChange={handleFilterChange}
-          />
+          <Filters />
         </Card>
         <ListingCards listings={listings} />
       </div>
       <div className="flex grow">
-        <ListingsMap
-          listings={listings}
-          loading={isFetching}
-          onMoveEnd={handleMoveEnd}
-        />
+        <ListingsMap listings={listings} loading={isFetching} />
       </div>
     </div>
   );

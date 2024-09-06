@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { type LngLatBounds, MapProvider } from "react-map-gl";
+import { MapProvider } from "react-map-gl";
 
 import type { Nullable, TListing } from "@/app/_types";
 import { ListingPins } from "../listing-pins";
@@ -9,12 +9,11 @@ import { Mapbox } from "../mapbox";
 import { useGlobalStore } from "@/app/store/global.store";
 
 type Props = {
-  onMoveEnd: (bounds: LngLatBounds) => void;
   listings?: TListing[];
   loading?: boolean;
 };
 
-export const ListingsMap = ({ listings, loading, onMoveEnd }: Props) => {
+export const ListingsMap = ({ listings, loading }: Props) => {
   const focusedListing = useGlobalStore((state) => state.focusedListing);
 
   const [selected, setSelected] = useState<Nullable<TListing>>(null);
@@ -29,7 +28,7 @@ export const ListingsMap = ({ listings, loading, onMoveEnd }: Props) => {
 
   return (
     <MapProvider>
-      <Mapbox onMoveEnd={onMoveEnd} loading={loading}>
+      <Mapbox loading={loading}>
         <ListingPins
           listings={listings}
           onPinClick={handlePinClick}

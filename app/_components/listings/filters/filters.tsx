@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
+import { useFiltersStore } from "@/app/store";
+import type { TFilters, TInput } from "@/app/_types";
 import { CurrencyInput } from "../../form/currency-input";
 import { Input } from "../../form/input";
 import { MultipleSelect } from "../../form/multiple-select";
@@ -8,21 +11,22 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../../ui/accordion";
-import type { TFilters, TInput } from "@/app/_types";
 import { Slider } from "../../ui/slider";
 
-type Props = {
-  onChange: (input: TInput<unknown>) => void;
-  initialFilters: TFilters;
-};
-
-export const Filters = ({ onChange, initialFilters }: Props) => {
-  const [filters, setFilters] = useState(initialFilters);
+export const Filters = () => {
+  const { filters: filtersStoreState, updateFilters: updateFiltersStore } =
+    useFiltersStore();
+  const [filters, setFilters] = useState<TFilters>(filtersStoreState);
 
   const handleChange = ({ name, value }: TInput<unknown>) => {
     setFilters({ ...filters, [name]: value });
-    onChange({ name, value });
+    debouncedFiltersUpdate({ name, value });
   };
+
+  const debouncedFiltersUpdate = useDebouncedCallback(
+    ({ name, value }: TInput<unknown>) => updateFiltersStore({ [name]: value }),
+    500,
+  );
 
   return (
     <Accordion type="single" collapsible>
