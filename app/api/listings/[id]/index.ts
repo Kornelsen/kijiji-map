@@ -1,1 +1,1 @@
-export { useListingById } from "./listing-by-id.hook";
+export { useListingById } from "./listing-by-id.query";

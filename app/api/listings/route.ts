@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import mongoClient from "@/lib/mongodb";
 import type { TFilters, TListing } from "../../_types";
-import { getFilters } from "./utils";
+import { getFilters } from "./listings.utils";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
