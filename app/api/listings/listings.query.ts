@@ -1,4 +1,5 @@
 import type { TFilters, TListing } from "@/app/_types";
+import { useFiltersStore } from "@/app/store";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
 // TODO: rename this file
@@ -11,9 +12,10 @@ export const getListings = async (filters: TFilters) => {
   return result;
 };
 
-export const useListings = (filters: TFilters) => {
+export const useListings = () => {
+  const filters = useFiltersStore((state) => state.filters);
   return useQuery<TListing[]>({
-    queryKey: ["listings", encodeURIComponent(JSON.stringify(filters))],
+    queryKey: ["listings", filters],
     queryFn: () => getListings(filters),
     placeholderData: keepPreviousData,
   });

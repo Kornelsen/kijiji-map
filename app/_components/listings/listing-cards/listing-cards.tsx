@@ -1,15 +1,15 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import type { TListing } from "@/app/_types";
+import { useListings } from "@/app/api/listings";
 import { ListingCard } from "../listing-card/listing-card";
 import { Card, PaginationControl } from "../../shared";
 
-type Props = {
-  listings?: TListing[];
-};
-
 const ITEMS_PER_PAGE = 10;
 
-export const ListingCards = ({ listings }: Props) => {
+export const ListingCards = () => {
+  const { data: listings = [] } = useListings();
+
   const [page, setPage] = useState(0);
   const handlePageChange = (newPage: number) => {
     setPage(newPage);

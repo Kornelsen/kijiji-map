@@ -2,18 +2,15 @@
 import { useState } from "react";
 import { MapProvider } from "react-map-gl";
 
+import { useGlobalStore } from "@/app/store/global.store";
+import { useListings } from "@/app/api/listings";
 import type { Nullable, TListing } from "@/app/_types";
 import { ListingPins } from "../listing-pins";
 import { ListingPopup } from "../listing-popup";
 import { Mapbox } from "../mapbox";
-import { useGlobalStore } from "@/app/store/global.store";
 
-type Props = {
-  listings?: TListing[];
-  loading?: boolean;
-};
-
-export const ListingsMap = ({ listings, loading }: Props) => {
+export const ListingsMap = () => {
+  const { data: listings = [], isFetching } = useListings();
   const focusedListing = useGlobalStore((state) => state.focusedListing);
 
   const [selected, setSelected] = useState<Nullable<TListing>>(null);
@@ -28,7 +25,7 @@ export const ListingsMap = ({ listings, loading }: Props) => {
 
   return (
     <MapProvider>
-      <Mapbox loading={loading}>
+      <Mapbox loading={isFetching}>
         <ListingPins
           listings={listings}
           onPinClick={handlePinClick}

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { TFilters } from "../_types";
-import { initialFilters } from "@/app/api/listings";
+import { initialFilters } from "@/app/api/listings/listings.constants";
 
 type State = {
   filters: TFilters;
