@@ -32,7 +32,8 @@
 		"tailwind-merge": "^2.5.2",
 		"tailwindcss-animate": "^1.0.7",
 		"text-mask-addons": "^3.8.0",
-		"use-debounce": "^10.0.0"
+		"use-debounce": "^10.0.0",
+		"zustand": "^4.5.5"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.7.3",

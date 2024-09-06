@@ -6,20 +6,17 @@ import type { Nullable, TListing } from "@/app/_types";
 import { ListingPins } from "../listing-pins";
 import { ListingPopup } from "../listing-popup";
 import { Mapbox } from "../mapbox";
+import { useGlobalStore } from "@/app/store/global.store";
 
 type Props = {
   onMoveEnd: (bounds: LngLatBounds) => void;
   listings?: TListing[];
   loading?: boolean;
-  focusedListing: Nullable<string>;
 };
 
-export const ListingsMap = ({
-  listings,
-  loading,
-  focusedListing,
-  onMoveEnd,
-}: Props) => {
+export const ListingsMap = ({ listings, loading, onMoveEnd }: Props) => {
+  const focusedListing = useGlobalStore((state) => state.focusedListing);
+
   const [selected, setSelected] = useState<Nullable<TListing>>(null);
 
   const handlePinClick = (listing: TListing) => {

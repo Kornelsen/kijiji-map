@@ -15,7 +15,9 @@ export const ListingPopup = ({ listing, onClose }: Props) => {
       latitude={listing.location.coordinates[1]}
       onClose={onClose}
     >
-      <ListingCard listing={listing} onFocus={() => {}} onFocusEnd={() => {}} />
+      <div className="max-h-[200px] w-[415px] overflow-auto">
+        <ListingCard listing={listing} />
+      </div>
     </Popup>
   );
 };
