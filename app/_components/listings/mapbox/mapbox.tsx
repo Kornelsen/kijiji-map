@@ -5,6 +5,7 @@ import {
   useMap,
 } from "react-map-gl";
 import { useFiltersStore } from "@/app/store";
+import { initialFilters } from "@/app/api/listings";
 import { Loader } from "../../shared/loader";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -16,14 +17,7 @@ type Props = {
   loading?: boolean;
 };
 
-// TODO: add a const for lat and lng
-export const Mapbox = ({
-  children,
-  latitude = 43.6532,
-  longitude = -79.3832,
-  zoom = 12,
-  loading,
-}: Props) => {
+export const Mapbox = ({ children, loading }: Props) => {
   const map = useMap();
   const updateFilters = useFiltersStore((state) => state.updateFilters);
 
@@ -37,9 +31,7 @@ export const Mapbox = ({
       // TODO: use a private env variable for this
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
       initialViewState={{
-        longitude,
-        latitude,
-        zoom,
+        bounds: initialFilters.bounds,
       }}
       style={{ width: "100%", height: "100%" }}
       mapStyle="mapbox://styles/mapbox/streets-v11"

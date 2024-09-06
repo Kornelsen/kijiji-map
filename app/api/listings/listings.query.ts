@@ -13,7 +13,7 @@ export const getListings = async (filters: TFilters) => {
 export const useListings = () => {
   const filters = useFiltersStore((state) => state.filters);
   return useQuery<TListing[]>({
-    queryKey: ["listings", filters],
+    queryKey: ["listings", encodeURIComponent(JSON.stringify(filters))],
     queryFn: () => getListings(filters),
     placeholderData: keepPreviousData,
   });
