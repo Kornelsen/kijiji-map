@@ -2,8 +2,6 @@ import type { TFilters, TListing } from "@/app/_types";
 import { useFiltersStore } from "@/app/store";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
-// TODO: rename this file
-
 export const getListings = async (filters: TFilters) => {
   const filtersParam = encodeURIComponent(JSON.stringify(filters));
   const uri = `${process.env.NEXT_PUBLIC_API_URI}listings?filters=${filtersParam}`;
