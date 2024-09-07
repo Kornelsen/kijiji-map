@@ -10,8 +10,6 @@ import { getListings, initialFilters } from "./api/listings";
 export default async function Home() {
   const queryClient = new QueryClient();
 
-  console.log("this is the server", isServer);
-
   await queryClient.prefetchQuery({
     queryKey: ["listings", encodeURIComponent(JSON.stringify(initialFilters))],
     queryFn: () => getListings(initialFilters),
