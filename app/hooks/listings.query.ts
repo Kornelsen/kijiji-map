@@ -5,6 +5,7 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 export const getListings = async (filters: TFilters) => {
   const filtersParam = encodeURIComponent(JSON.stringify(filters));
   const uri = `${process.env.NEXT_PUBLIC_API_URI}listings?filters=${filtersParam}`;
+  console.log(uri);
   const resp = await fetch(uri);
   const result = await resp.json();
   return result;

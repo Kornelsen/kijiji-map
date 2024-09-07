@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MapProvider } from "react-map-gl";
 
 import { useGlobalStore } from "@/app/store/global.store";
-import { useListings } from "@/app/api/listings";
+import { useListings } from "@/app/hooks";
 import type { Nullable, TListing } from "@/app/_types";
 import { ListingPins } from "../listing-pins";
 import { ListingPopup } from "../listing-popup";

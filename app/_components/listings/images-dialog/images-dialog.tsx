@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useListingById } from "@/app/api/listings";
+import { useListingById } from "@/app/hooks";
 import {
   Dialog,
   DialogContent,

@@ -1,6 +1,32 @@
 import type { TFilters, TListing } from "@/app/_types";
 import type { Ad } from "kijiji-scraper";
 import type { Filter, Document } from "mongodb";
+import mongoClient from "@/lib/mongodb";
+
+export const getListingsData = async (
+  filters: TFilters,
+): Promise<TListing[]> => {
+  try {
+    const db = mongoClient.db("kijiji-map");
+
+    const mongoFilters = getFilters(filters);
+
+    const data = await db
+      .collection("listings")
+      .find<TListing>(mongoFilters)
+      .sort({ date: -1 })
+      .project({
+        attributes: 0,
+        images: 0,
+      })
+      .toArray();
+
+    return data as TListing[];
+  } catch (error) {
+    console.error("Error fetching listings data:", error);
+    throw error;
+  }
+};
 
 export const mapToListing = (ad: Ad) => {
   return {

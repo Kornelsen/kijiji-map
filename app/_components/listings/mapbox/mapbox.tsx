@@ -5,7 +5,7 @@ import {
   useMap,
 } from "react-map-gl";
 import { useFiltersStore } from "@/app/store";
-import { initialFilters } from "@/app/api/listings";
+import { initialFilters } from "@/app/constants";
 import { Loader } from "../../shared/loader";
 import "mapbox-gl/dist/mapbox-gl.css";
 

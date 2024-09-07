@@ -1,6 +1,6 @@
 "use client";
 
-import { useListings } from "@/app/api/listings";
+import { useListings } from "@/app/hooks";
 import { Card } from "../../shared";
 import { Filters } from "../filters";
 

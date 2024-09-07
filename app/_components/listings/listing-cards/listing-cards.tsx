@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useListings } from "@/app/api/listings";
+import { useListings } from "@/app/hooks";
 import { ListingCard } from "../listing-card/listing-card";
 import { Card, PaginationControl } from "../../shared";
 
