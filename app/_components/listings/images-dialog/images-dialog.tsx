@@ -27,6 +27,7 @@ export const ImagesDialog = ({ id, image, title }: Props) => {
       <DialogTrigger asChild>
         <ListingThumbnail
           image={image}
+          alt={title}
           height={127}
           width={179}
           onClick={handleOpen}
