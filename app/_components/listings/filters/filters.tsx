@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { FaTimes } from "react-icons/fa";
 import { useFiltersStore } from "@/app/store";
 import type { TFilters, TInput } from "@/app/_types";
 import { CurrencyInput } from "../../form/currency-input";
@@ -13,10 +14,14 @@ import {
 } from "../../ui/accordion";
 import { Slider } from "../../ui/slider";
 import { bathOptions, bedOptions, miscOptions } from "./filters.constants";
+import { initialFilters } from "@/app/constants";
 
 export const Filters = () => {
-  const { filters: filtersStoreState, updateFilters: updateFiltersStore } =
-    useFiltersStore();
+  const {
+    filters: filtersStoreState,
+    updateFilters: updateFiltersStore,
+    clearFilters,
+  } = useFiltersStore();
   const [filters, setFilters] = useState<TFilters>(filtersStoreState);
 
   const handleChange = ({ name, value }: TInput<unknown>) => {
@@ -24,15 +29,22 @@ export const Filters = () => {
     debouncedFiltersUpdate({ name, value });
   };
 
+  const handleClearFilters = () => {
+    clearFilters();
+    setFilters({ ...initialFilters, bounds: filters.bounds });
+  };
+
   const debouncedFiltersUpdate = useDebouncedCallback(
     ({ name, value }: TInput<unknown>) => updateFiltersStore({ [name]: value }),
     500,
   );
 
+  const activeFiltersCount = getActiveFiltersCount(filters);
+
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" collapsible className="space-y-2">
       <AccordionItem value="filters">
-        <AccordionTrigger className="text-white text-md p-0 hover:no-underline rounded bg-[#373373] px-4 py-2">
+        <AccordionTrigger className="flex gap-1 text-white text-md p-0 hover:no-underline rounded bg-[#373373] px-4 py-2 w-full">
           Filters
         </AccordionTrigger>
         <AccordionContent className="flex flex-col gap-2 pt-4 px-1">
@@ -119,6 +131,22 @@ export const Filters = () => {
           />
         </AccordionContent>
       </AccordionItem>
+      <div className="flex items-center">
+        {!!activeFiltersCount && (
+          <span>
+            {activeFiltersCount} Filter{activeFiltersCount > 1 ? "s" : ""}{" "}
+            Active
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={handleClearFilters}
+          className="flex gap-1 items-center w-fit hover:underline ml-auto"
+        >
+          <FaTimes />
+          Clear Filters
+        </button>
+      </div>
     </Accordion>
   );
 };

@@ -6,6 +6,7 @@ type State = {
   filters: TFilters;
   setFilters: (filters: TFilters) => void;
   updateFilters: (filters: Partial<TFilters>) => void;
+  clearFilters: () => void;
 };
 
 export const useFiltersStore = create<State>((set) => ({
@@ -13,4 +14,8 @@ export const useFiltersStore = create<State>((set) => ({
   setFilters: (filters) => set({ filters }),
   updateFilters: (filters) =>
     set((state) => ({ filters: { ...state.filters, ...filters } })),
+  clearFilters: () =>
+    set((state) => ({
+      filters: { ...initialFilters, bounds: state.filters.bounds },
+    })),
 }));
