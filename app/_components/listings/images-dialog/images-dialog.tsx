@@ -10,6 +10,7 @@ import {
 import { Button } from "../../shared";
 import { ListingThumbnail } from "../listing-thumbnail";
 import { ImageCarousel } from "../../shared/image-carousel";
+import { useGlobalStore } from "@/app/store";
 
 type Props = {
   id: string;
@@ -18,9 +19,13 @@ type Props = {
 };
 
 export const ImagesDialog = ({ id, image, title }: Props) => {
+  const setFocusedListing = useGlobalStore((state) => state.setFocusedListing);
   const [dialogOpen, setDialogOpen] = useState(false);
   const handleOpen = () => setDialogOpen(true);
-  const handleOpenChange = (open: boolean) => setDialogOpen(open);
+  const handleOpenChange = (open: boolean) => {
+    setDialogOpen(open);
+    setFocusedListing(null);
+  };
 
   return (
     <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
