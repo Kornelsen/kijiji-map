@@ -36,7 +36,7 @@ export const Filters = () => {
 
   const debouncedFiltersUpdate = useDebouncedCallback(
     ({ name, value }: TInput<unknown>) => updateFiltersStore({ [name]: value }),
-    500,
+    500
   );
 
   const activeFiltersCount = getActiveFiltersCount(filters);
@@ -131,22 +131,22 @@ export const Filters = () => {
           />
         </AccordionContent>
       </AccordionItem>
-      <div className="flex items-center">
-        {!!activeFiltersCount && (
+      {!!activeFiltersCount && (
+        <div className="flex items-center">
           <span>
             {activeFiltersCount} Filter{activeFiltersCount > 1 ? "s" : ""}{" "}
             Active
           </span>
-        )}
-        <button
-          type="button"
-          onClick={handleClearFilters}
-          className="flex gap-1 items-center w-fit hover:underline ml-auto"
-        >
-          <FaTimes />
-          Clear Filters
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={handleClearFilters}
+            className="flex gap-1 items-center w-fit hover:underline ml-auto"
+          >
+            <FaTimes />
+            Clear Filters
+          </button>
+        </div>
+      )}
     </Accordion>
   );
 };
@@ -156,7 +156,7 @@ const getActiveFiltersCount = (filters: TFilters) => {
   const activeFilters = Object.entries(filters).filter(
     ([key, value]) =>
       !excludedFilters.includes(key) &&
-      (Array.isArray(value) ? value.length : value),
+      (Array.isArray(value) ? value.length : value)
   );
 
   return activeFilters.length + filters.misc.length;
