@@ -1,5 +1,5 @@
 import type { LngLatBounds } from "mapbox-gl";
-import type { Nullable } from "./utility";
+import type { Nullable } from "./utility.type";
 
 export type TFilters = {
   bounds: LngLatBounds;
