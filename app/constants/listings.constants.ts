@@ -7,8 +7,6 @@ export const initalBounds = new LngLatBounds([
 
 export const initialFilters: TFilters = {
   bounds: initalBounds,
-  minPrice: null,
-  maxPrice: null,
   bedrooms: [],
   bathrooms: [],
   misc: [],
