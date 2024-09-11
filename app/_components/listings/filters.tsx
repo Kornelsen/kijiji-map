@@ -10,8 +10,12 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../ui/accordion";
-import { bathOptions, bedOptions, miscOptions } from "./filters.constants";
-import { initialFilters } from "@/app/constants";
+import {
+  initialFilters,
+  bathOptions,
+  bedOptions,
+  miscOptions,
+} from "@/app/constants";
 
 export const Filters = () => {
   const {
@@ -33,7 +37,7 @@ export const Filters = () => {
 
   const debouncedFiltersUpdate = useDebouncedCallback(
     ({ name, value }: TInput<unknown>) => updateFiltersStore({ [name]: value }),
-    500,
+    500
   );
 
   const activeFiltersCount = getActiveFiltersCount(filters);
@@ -106,7 +110,7 @@ const getActiveFiltersCount = (filters: TFilters) => {
   const activeFilters = Object.entries(filters).filter(
     ([key, value]) =>
       !excludedFilters.includes(key) &&
-      (Array.isArray(value) ? value.length : value),
+      (Array.isArray(value) ? value.length : value)
   );
 
   return activeFilters.length + filters.misc.length;
