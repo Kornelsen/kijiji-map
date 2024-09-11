@@ -5,7 +5,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../../ui/carousel";
+} from "../ui/carousel";
 
 export const ImageCarousel = ({
   images,

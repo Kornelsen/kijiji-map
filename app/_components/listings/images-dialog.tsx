@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useListingById } from "@/app/hooks";
 import {
@@ -6,10 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../ui/dialog";
-import { Button } from "../../shared";
-import { ListingThumbnail } from "../listing-thumbnail";
-import { ImageCarousel } from "../../shared/image-carousel";
+} from "../ui/dialog";
+import { Button } from "../shared";
+import { ListingThumbnail } from "./listing-thumbnail";
+import { ImageCarousel } from "../shared";
 import { useGlobalStore } from "@/app/store";
 
 type Props = {

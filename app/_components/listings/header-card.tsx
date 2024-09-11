@@ -1,8 +1,8 @@
 "use client";
 
 import { useListings } from "@/app/hooks";
-import { Card } from "../../shared";
-import { Filters } from "../filters";
+import { Card } from "../shared";
+import { Filters } from "./filters";
 
 export const HeaderCard = () => {
   const { data: listings } = useListings();

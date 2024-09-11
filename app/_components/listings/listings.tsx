@@ -1,5 +1,5 @@
 import { ListingCards } from "./listing-cards";
-import { ListingsMap } from "./listings-map";
+import { ListingsMap } from "../map";
 import { HeaderCard } from "./header-card";
 
 export const Listings = () => {

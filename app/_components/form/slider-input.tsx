@@ -1,6 +1,6 @@
-import { Slider } from "../../ui/slider";
-import { CurrencyInput } from "../currency-input";
-import { Input } from "../input";
+import { Slider } from "../ui/slider";
+import { CurrencyInput } from "./currency-input";
+import { Input } from "./input";
 import type { Nullable, TInput } from "@/app/_types";
 
 type Props = {

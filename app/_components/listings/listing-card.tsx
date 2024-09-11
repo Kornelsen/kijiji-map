@@ -2,8 +2,8 @@ import { useGlobalStore } from "@/app/store";
 import type { TListing } from "@/app/_types";
 import { formatAddress } from "@/app/_utils/string";
 import { getRelativeTime } from "@/app/_utils/date";
-import { ImagesDialog } from "../images-dialog";
-import { Card } from "../../shared";
+import { ImagesDialog } from "./images-dialog";
+import { Card } from "../shared";
 
 type Props = {
   listing: TListing;

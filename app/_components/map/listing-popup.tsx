@@ -1,6 +1,6 @@
 import type { TListing } from "@/app/_types";
 import { Popup } from "react-map-gl";
-import { ListingCard } from "../listing-card/listing-card";
+import { ListingCard } from "../listings";
 
 type Props = {
   listing: TListing;

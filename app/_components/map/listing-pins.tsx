@@ -1,6 +1,6 @@
 import type { Nullable, TListing } from "@/app/_types";
 import { Marker } from "react-map-gl";
-import { Pin } from "../../shared";
+import { Pin } from "../shared";
 
 type Props = {
   onPinClick: (marker: TListing) => void;

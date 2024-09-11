@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useListings } from "@/app/hooks";
-import { ListingCard } from "../listing-card/listing-card";
-import { Card, PaginationControl } from "../../shared";
+import { ListingCard } from "./listing-card";
+import { Card, PaginationControl } from "../shared";
 
 const ITEMS_PER_PAGE = 10;
 

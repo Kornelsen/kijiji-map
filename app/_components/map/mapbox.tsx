@@ -6,7 +6,7 @@ import {
 } from "react-map-gl";
 import { useFiltersStore } from "@/app/store";
 import { initialFilters } from "@/app/constants";
-import { Loader } from "../../shared/loader";
+import { Loader } from "../shared/loader";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 type Props = {
