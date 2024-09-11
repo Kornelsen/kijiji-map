@@ -1,6 +1,6 @@
 ## Kijiji Map
 
-This application enhances the experience of finding rental listings in Toronto by plotting listings from Kijiji on an interactive map. While Kijiji does not provide a map view, this app fills the gap by enabling users to visually explore available rentals.
+The aim of this project was to enhance the rental search experience on Kijiji by providing a map view. The app enables users to visually explore available rentals through an interactive map, making it easier to find the perfect place.
 
 [View it Live](https://kijiji-map.vercel.app/)
 
