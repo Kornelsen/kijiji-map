@@ -56,10 +56,8 @@ export const getFilters = ({
   bounds,
   bedrooms,
   bathrooms,
-  maxPrice,
-  minPrice,
-  maxSqft,
-  minSqft,
+  price,
+  sqft,
   misc,
 }: TFilters): Filter<Document> => {
   const filters: Filter<Document> = { $and: [] };
@@ -74,10 +72,14 @@ export const getFilters = ({
         },
       },
     });
-  if (maxPrice) filters.$and?.push({ price: { $lt: maxPrice } });
-  if (minPrice) filters.$and?.push({ price: { $gt: minPrice } });
-  if (maxSqft) filters.$and?.push({ sqft: { $lt: maxSqft } });
-  if (minSqft) filters.$and?.push({ sqft: { $gt: minSqft } });
+  if (price) {
+    if (price[0]) filters.$and?.push({ price: { $gt: price[0] } });
+    if (price[1]) filters.$and?.push({ price: { $lt: price[1] } });
+  }
+  if (sqft) {
+    if (sqft[0]) filters.$and?.push({ sqft: { $gt: sqft[0] } });
+    if (sqft[1]) filters.$and?.push({ sqft: { $lt: sqft[1] } });
+  }
   if (bedrooms?.length) filters.$and?.push({ bedrooms: { $in: bedrooms } });
   if (bathrooms?.length) filters.$and?.push({ bathrooms: { $in: bathrooms } });
   if (misc?.length) {

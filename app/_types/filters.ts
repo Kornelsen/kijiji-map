@@ -3,10 +3,8 @@ import type { Nullable } from "./utility";
 
 export type TFilters = {
   bounds: LngLatBounds;
-  minPrice?: Nullable<number>;
-  maxPrice?: Nullable<number>;
-  minSqft?: number;
-  maxSqft?: number;
+  price?: [Nullable<number>, Nullable<number>];
+  sqft?: [Nullable<number>, Nullable<number>];
   bedrooms: number[];
   bathrooms: number[];
   misc: string[];
