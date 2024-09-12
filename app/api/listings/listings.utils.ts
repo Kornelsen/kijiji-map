@@ -80,8 +80,18 @@ export const getFilters = ({
     if (sqft[0]) filters.$and?.push({ sqft: { $gt: sqft[0] } });
     if (sqft[1]) filters.$and?.push({ sqft: { $lt: sqft[1] } });
   }
-  if (bedrooms?.length) filters.$and?.push({ bedrooms: { $in: bedrooms } });
-  if (bathrooms?.length) filters.$and?.push({ bathrooms: { $in: bathrooms } });
+  if (bedrooms?.length) {
+    const bedroomFilters = bedrooms.map((bedroom) =>
+      bedroom === 4 ? { bedrooms: { $gte: 4 } } : { bedrooms: bedroom },
+    );
+    filters.$and?.push({ $or: bedroomFilters });
+  }
+  if (bathrooms?.length) {
+    const bathroomFilters = bathrooms.map((bathroom) =>
+      bathroom === 4 ? { bathrooms: { $gte: 4 } } : { bathrooms: bathroom },
+    );
+    filters.$and?.push({ $or: bathroomFilters });
+  }
   if (misc?.length) {
     for (const miscFilter of misc) {
       filters.$and?.push({
