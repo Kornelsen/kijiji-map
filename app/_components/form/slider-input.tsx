@@ -6,6 +6,8 @@ import type { Nullable, TInput } from "@/app/_types";
 type Props = {
   label: string;
   name: string;
+  min: number;
+  max: number;
   value?: [Nullable<number>, Nullable<number>];
   type?: "number" | "currency";
   onChange: ({ name, value }: TInput<unknown>) => void;
@@ -16,14 +18,22 @@ export const SliderInput = ({
   name,
   value = [null, null],
   type,
+  max,
+  min,
   onChange,
 }: Props) => {
-  const [minValue, maxValue] = value;
+  const [leftValue, rightValue] = value;
 
   const handleInputChange = ({ name: fieldName, value }: TInput<unknown>) => {
-    fieldName === "min"
-      ? onChange({ name, value: [value, maxValue] })
-      : onChange({ name, value: [minValue, value] });
+    if (value && +value < min) value = min;
+    if (value && +value > max) value = max;
+    if (fieldName === "min") {
+      if (value && rightValue && +value > rightValue) value = rightValue;
+      onChange({ name, value: [value, rightValue] });
+    } else {
+      if (value && leftValue && +value < leftValue) value = leftValue;
+      onChange({ name, value: [leftValue, value] });
+    }
   };
 
   const handleSliderChange = (value: [number, number]) => {
@@ -46,9 +56,9 @@ export const SliderInput = ({
         />
       )}
       <Slider
-        min={0}
-        max={2000}
-        value={[minValue || 0, maxValue || 2000]}
+        min={min}
+        max={max}
+        value={[leftValue || min, rightValue || max]}
         step={50}
         onValueChange={handleSliderChange}
         className="py-2"
@@ -63,7 +73,7 @@ type InputProps = Pick<Props, "label" | "onChange"> & {
 };
 
 const NumericalInputs = ({ label, value, onChange }: InputProps) => {
-  const [minValue, maxValue] = value;
+  const [leftValue, rightValue] = value;
   return (
     <div className="flex gap-2">
       <Input
@@ -71,7 +81,7 @@ const NumericalInputs = ({ label, value, onChange }: InputProps) => {
         label={`Min ${label}`}
         placeholder="0"
         type="number"
-        value={minValue}
+        value={leftValue}
         onChange={onChange}
       />
       <Input
@@ -79,7 +89,7 @@ const NumericalInputs = ({ label, value, onChange }: InputProps) => {
         label={`Max ${label}`}
         placeholder="Unlimited"
         type="number"
-        value={maxValue}
+        value={rightValue}
         onChange={onChange}
       />
     </div>
@@ -87,21 +97,21 @@ const NumericalInputs = ({ label, value, onChange }: InputProps) => {
 };
 
 const CurrencyInputs = ({ label, value, onChange }: InputProps) => {
-  const [minValue, maxValue] = value;
+  const [leftValue, rightValue] = value;
   return (
     <div className="flex gap-2">
       <CurrencyInput
         name="min"
         label={`Min ${label}`}
         placeholder="$0"
-        value={minValue}
+        value={leftValue}
         onChange={onChange}
       />
       <CurrencyInput
         name="max"
         label={`Max ${label}`}
         placeholder="Unlimited"
-        value={maxValue}
+        value={rightValue}
         onChange={onChange}
       />
     </div>

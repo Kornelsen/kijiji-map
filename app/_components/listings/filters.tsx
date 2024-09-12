@@ -66,6 +66,8 @@ export const Filters = () => {
           <SliderInput
             name="price"
             label="Price"
+            min={0}
+            max={5000}
             value={filters.price}
             type="currency"
             onChange={handleChange}
@@ -73,6 +75,8 @@ export const Filters = () => {
           <SliderInput
             name="sqft"
             label="Sqft"
+            min={0}
+            max={3000}
             value={filters.sqft}
             onChange={handleChange}
           />
@@ -106,12 +110,17 @@ export const Filters = () => {
 };
 
 const getActiveFiltersCount = (filters: TFilters) => {
-  const excludedFilters = ["bounds", "misc"];
+  const excludedFilters = ["bounds", "misc", "price", "sqft"];
   const activeFilters = Object.entries(filters).filter(
     ([key, value]) =>
       !excludedFilters.includes(key) &&
       (Array.isArray(value) ? value.length : value)
   );
 
-  return activeFilters.length + filters.misc.length;
+  let additional = 0;
+
+  if (filters.price && (filters.price[0] || filters.price[1])) additional++;
+  if (filters.sqft && (filters.sqft[0] || filters.sqft[1])) additional++;
+
+  return activeFilters.length + filters.misc.length + additional;
 };

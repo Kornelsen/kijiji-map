@@ -17,6 +17,8 @@ export const Input = ({
   type = "string",
   onChange,
 }: Props) => {
+  const isNumeric = type === "number";
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value ?? null;
     onChange({
@@ -34,6 +36,7 @@ export const Input = ({
         onChange={handleChange}
         value={value ?? undefined}
         placeholder={placeholder}
+        type={isNumeric ? "number" : "text"}
       />
     </div>
   );
