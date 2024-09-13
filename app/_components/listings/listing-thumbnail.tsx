@@ -1,5 +1,6 @@
 import Image from "next/image";
 import notFoundImg from "/public/not-found.jpg";
+import { notFoundDataUrl } from "@/app/constants";
 
 type Props = {
   alt: string;
@@ -24,6 +25,7 @@ export const ListingThumbnail = ({
         objectPosition="center"
         className="rounded-tl hover:cursor-pointer"
         sizes={`${width}px`}
+        placeholder={notFoundDataUrl}
         onClick={onClick}
         fill
       />

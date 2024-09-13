@@ -6,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
+import { notFoundDataUrl } from "@/app/constants";
 
 export const ImageCarousel = ({
   images,
@@ -28,6 +29,7 @@ export const ImageCarousel = ({
               width={height}
               height={height}
               style={{ width, height }}
+              placeholder={notFoundDataUrl}
               className="mx-auto"
             />
           </CarouselItem>
