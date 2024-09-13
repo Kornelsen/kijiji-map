@@ -2,7 +2,7 @@ import type { TFilters } from "@/app/_types";
 import { LngLatBounds } from "mapbox-gl";
 
 export const initalBounds = new LngLatBounds([
-  -79.56567891588688, 43.57266292761034, -79.20072108688066, 43.734869536360236,
+  -79.46196298677538, 43.62623465357558, -79.34664605356505, 43.690946976992024,
 ]);
 
 export const initialFilters: TFilters = {

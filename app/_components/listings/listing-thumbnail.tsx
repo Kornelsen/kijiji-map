@@ -22,8 +22,7 @@ export const ListingThumbnail = ({
       <Image
         src={image || notFoundImg}
         alt={alt}
-        objectPosition="center"
-        className="rounded-tl hover:cursor-pointer"
+        className="rounded-tl hover:cursor-pointer object-center"
         sizes={`${width}px`}
         placeholder={notFoundDataUrl}
         onClick={onClick}
