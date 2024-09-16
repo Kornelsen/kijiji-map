@@ -33,7 +33,7 @@ export type GeoJSONFeatureCollection = {
 };
 
 export type TSelectedListings = {
-  selectedListings: GeoJSONPoint[];
+  points: GeoJSONPoint[];
   coordinates: [number, number];
 };
 

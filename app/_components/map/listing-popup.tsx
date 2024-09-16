@@ -1,7 +1,7 @@
+import { useEffect } from "react";
 import { Popup } from "react-map-gl";
 import { ListingCard } from "../listings";
 import type { TSelectedListings } from "@/app/_types";
-import { useEffect } from "react";
 
 type Props = {
   listing: TSelectedListings;
@@ -10,8 +10,8 @@ type Props = {
 
 export const ListingPopup = ({ listing, onClose }: Props) => {
   useEffect(() => {
-    console.log(listing.selectedListings[0].properties.listingId);
-  }, [listing.selectedListings[0].properties.listingId]);
+    console.log(listing.points[0].properties.listingId);
+  }, [listing.points[0].properties.listingId]);
 
   return (
     <Popup
@@ -21,7 +21,7 @@ export const ListingPopup = ({ listing, onClose }: Props) => {
       onClose={onClose}
     >
       <div className="max-h-[200px] w-[415px] overflow-auto">
-        <ListingCard listing={listing.selectedListings[0]} />
+        <ListingCard listing={listing.points[0]} />
       </div>
     </Popup>
   );

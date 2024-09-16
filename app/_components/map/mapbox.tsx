@@ -31,7 +31,7 @@ export const Mapbox = ({ children, loading }: Props) => {
   const updateFilters = useFiltersStore((state) => state.updateFilters);
 
   const { setFocusedListing, setSelectedListings } = useGlobalStore(
-    (state) => state,
+    (state) => state
   );
 
   const mapRef = useRef<MapRef | null>(null);
@@ -81,16 +81,14 @@ export const Mapbox = ({ children, loading }: Props) => {
         if (!points.length) setSelectedListings(null);
         else {
           setSelectedListings({
-            selectedListings: points,
+            points,
             coordinates: [event.lngLat.lat, event.lngLat.lng],
           });
         }
       });
     } else {
       setSelectedListings({
-        selectedListings: [
-          { properties: feature.properties as PointProperties },
-        ],
+        points: [{ properties: feature.properties } as GeoJSONPoint],
         coordinates: [lngLat.lat, lngLat.lng],
       });
     }
@@ -121,7 +119,7 @@ export const Mapbox = ({ children, loading }: Props) => {
 const getClusteredPoints = (
   clusterId: number,
   clusterSource: GeoJSONSource,
-  callback: (points: GeoJSONPoint[]) => void,
+  callback: (points: GeoJSONPoint[]) => void
 ) => {
   clusterSource.getClusterLeaves(
     clusterId,
@@ -133,7 +131,7 @@ const getClusteredPoints = (
         callback([]);
       }
       callback(features as GeoJSONPoint[]);
-    },
+    }
   );
 };
 const getFocusedListingId = (point: Point, map?: MapRef) => {
