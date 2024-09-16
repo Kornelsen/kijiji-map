@@ -58,7 +58,7 @@ const Content = ({ id }: { id: string }) => {
 
   // TODO: add loader
   if (!listing || isLoading) return null;
-  const { images, url } = listing;
+  const { images, url } = listing.properties;
 
   return (
     <>

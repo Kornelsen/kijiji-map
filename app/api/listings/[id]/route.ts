@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import mongoClient from "@/lib/mongodb";
-import type { TListing } from "@/app/_types";
+import type { GeoJSONPoint } from "@/app/_types";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   if (!params.id) {
     return new Response("Bad Request", {
@@ -17,8 +17,14 @@ export async function GET(
     const db = mongoClient.db("kijiji-map");
 
     const data = await db
-      .collection("listings")
-      .findOne<TListing>({ listingId: params.id });
+      .collection("listing-features")
+      .findOne<GeoJSONPoint>({ "properties.listingId": params.id });
+
+    if (!data) {
+      return new Response("Listing Not Found", {
+        status: 404,
+      });
+    }
 
     return NextResponse.json(data);
   } catch (error) {

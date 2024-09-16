@@ -7,10 +7,9 @@ import type {
 import type { Ad } from "kijiji-scraper";
 import type { Filter, Document } from "mongodb";
 import mongoClient from "@/lib/mongodb";
-import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 export const getListingsData = async (
-  filters: TFilters,
+  filters: TFilters
 ): Promise<GeoJSONFeatureCollection> => {
   try {
     const db = mongoClient.db("kijiji-map");
@@ -18,8 +17,8 @@ export const getListingsData = async (
     const mongoFilters = getFilters(filters);
 
     const data = await db
-      .collection("listings")
-      .find<TListing>(mongoFilters)
+      .collection("listing-features")
+      .find<GeoJSONPoint>(mongoFilters)
       .sort({ date: -1 })
       .project({
         attributes: 0,
@@ -27,7 +26,10 @@ export const getListingsData = async (
       })
       .toArray();
 
-    return convertToGeoJSON(data as TListing[]);
+    return {
+      type: "FeatureCollection",
+      features: data as GeoJSONPoint[],
+    };
   } catch (error) {
     console.error("Error fetching listings data:", error);
     throw error;
@@ -36,7 +38,7 @@ export const getListingsData = async (
 
 // The function to convert TListing array to GeoJSON FeatureCollection
 export function convertToGeoJSON(
-  listings: TListing[],
+  listings: TListing[]
 ): GeoJSONFeatureCollection {
   const features: GeoJSONPoint[] = listings.map((listing) => ({
     type: "Feature",
@@ -99,9 +101,10 @@ export const getFilters = ({
   misc,
 }: TFilters): Filter<Document> => {
   const filters: Filter<Document> = { $and: [] };
-  if (bounds)
+
+  if (bounds) {
     filters.$and?.push({
-      location: {
+      "geometry.coordinates": {
         $geoWithin: {
           $box: [
             [bounds._sw.lng, bounds._sw.lat],
@@ -110,30 +113,40 @@ export const getFilters = ({
         },
       },
     });
+  }
+
   if (price) {
-    if (price[0]) filters.$and?.push({ price: { $gt: price[0] } });
-    if (price[1]) filters.$and?.push({ price: { $lt: price[1] } });
+    if (price[0]) filters.$and?.push({ "properties.price": { $gt: price[0] } });
+    if (price[1]) filters.$and?.push({ "properties.price": { $lt: price[1] } });
   }
+
   if (sqft) {
-    if (sqft[0]) filters.$and?.push({ sqft: { $gt: sqft[0] } });
-    if (sqft[1]) filters.$and?.push({ sqft: { $lt: sqft[1] } });
+    if (sqft[0]) filters.$and?.push({ "properties.sqft": { $gt: sqft[0] } });
+    if (sqft[1]) filters.$and?.push({ "properties.sqft": { $lt: sqft[1] } });
   }
+
   if (bedrooms?.length) {
     const bedroomFilters = bedrooms.map((bedroom) =>
-      bedroom === 4 ? { bedrooms: { $gte: 4 } } : { bedrooms: bedroom },
+      bedroom === 4
+        ? { "properties.bedrooms": { $gte: 4 } }
+        : { "properties.bedrooms": bedroom }
     );
     filters.$and?.push({ $or: bedroomFilters });
   }
+
   if (bathrooms?.length) {
     const bathroomFilters = bathrooms.map((bathroom) =>
-      bathroom === 4 ? { bathrooms: { $gte: 4 } } : { bathrooms: bathroom },
+      bathroom === 4
+        ? { "properties.bathrooms": { $gte: 4 } }
+        : { "properties.bathrooms": bathroom }
     );
     filters.$and?.push({ $or: bathroomFilters });
   }
+
   if (misc?.length) {
     for (const miscFilter of misc) {
       filters.$and?.push({
-        [`attributes.${miscFilter}`]: {
+        [`properties.attributes.${miscFilter}`]: {
           $exists: true,
           $nin: [false, 0, ""],
         },
