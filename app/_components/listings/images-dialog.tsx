@@ -26,7 +26,7 @@ export const ImagesDialog = ({ id, image, title }: Props) => {
   const handleOpen = () => setDialogOpen(true);
   const handleOpenChange = (open: boolean) => {
     setDialogOpen(open);
-    setFocusedListing(null);
+    setFocusedListing("");
   };
 
   return (

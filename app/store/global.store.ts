@@ -1,13 +1,18 @@
 import { create } from "zustand";
-import type { Nullable } from "../_types";
+import type { Nullable, TSelectedListings } from "../_types";
 
 type State = {
-  focusedListing: Nullable<string>;
-  setFocusedListing: (listingId: Nullable<string>) => void;
+  focusedListing: string;
+  setFocusedListing: (listingId: string) => void;
+  selectedListings: Nullable<TSelectedListings>;
+  setSelectedListings: (points: Nullable<TSelectedListings>) => void;
 };
 
 export const useGlobalStore = create<State>((set) => ({
-  focusedListing: null,
-  setFocusedListing: (listingId: Nullable<string>) =>
-    set({ focusedListing: listingId }),
+  focusedListing: "",
+  setFocusedListing: (listingId: string) => set({ focusedListing: listingId }),
+  selectedListings: null,
+  setSelectedListings: (points: Nullable<TSelectedListings>) => {
+    return set({ selectedListings: points });
+  },
 }));

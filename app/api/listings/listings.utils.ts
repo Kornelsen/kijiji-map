@@ -1,11 +1,17 @@
-import type { TFilters, TListing } from "@/app/_types";
+import type {
+  GeoJSONFeatureCollection,
+  GeoJSONPoint,
+  TFilters,
+  TListing,
+} from "@/app/_types";
 import type { Ad } from "kijiji-scraper";
 import type { Filter, Document } from "mongodb";
 import mongoClient from "@/lib/mongodb";
+import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 export const getListingsData = async (
   filters: TFilters,
-): Promise<TListing[]> => {
+): Promise<GeoJSONFeatureCollection> => {
   try {
     const db = mongoClient.db("kijiji-map");
 
@@ -21,12 +27,44 @@ export const getListingsData = async (
       })
       .toArray();
 
-    return data as TListing[];
+    return convertToGeoJSON(data as TListing[]);
   } catch (error) {
     console.error("Error fetching listings data:", error);
     throw error;
   }
 };
+
+// The function to convert TListing array to GeoJSON FeatureCollection
+export function convertToGeoJSON(
+  listings: TListing[],
+): GeoJSONFeatureCollection {
+  const features: GeoJSONPoint[] = listings.map((listing) => ({
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: listing.location.coordinates,
+    },
+    properties: {
+      title: listing.title,
+      image: listing.image,
+      images: listing.images,
+      address: listing.address,
+      date: listing.date,
+      price: listing.price,
+      bedrooms: listing.bedrooms,
+      bathrooms: listing.bathrooms,
+      url: listing.url,
+      sqft: listing.sqft,
+      attributes: listing.attributes,
+      listingId: listing.listingId,
+    },
+  }));
+
+  return {
+    type: "FeatureCollection",
+    features,
+  };
+}
 
 export const mapToListing = (ad: Ad) => {
   return {
