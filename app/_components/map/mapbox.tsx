@@ -10,11 +10,11 @@ import { useFiltersStore, useGlobalStore } from "@/app/store";
 import { initialFilters } from "@/app/constants";
 import { Loader } from "../shared/loader";
 import type { GeoJSONPoint } from "@/app/_types";
-import type {
+import {
   Point,
-  MapboxGeoJSONFeature,
-  MapMouseEvent,
-  GeoJSONSource,
+  type MapboxGeoJSONFeature,
+  type MapMouseEvent,
+  type GeoJSONSource,
 } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -30,16 +30,37 @@ export const Mapbox = ({ children, loading }: Props) => {
   const map = useMap();
   const updateFilters = useFiltersStore((state) => state.updateFilters);
 
-  const { setFocusedListing, setSelectedListings } = useGlobalStore(
-    (state) => state
-  );
+  const { hoveredCardCoordinates, setFocusedListing, setSelectedListings } =
+    useGlobalStore((state) => state);
 
   const mapRef = useRef<MapRef | null>(null);
 
   useEffect(() => {
+    if (!hoveredCardCoordinates || !mapRef.current) {
+      setFocusedListing("");
+      return;
+    }
+
+    const map = mapRef.current.getMap();
+    const [longitude, latitude] = hoveredCardCoordinates;
+
+    const projectedPoint = map.project([longitude, latitude]);
+    const point = new Point(projectedPoint.x, projectedPoint.y);
+
+    const features = map.queryRenderedFeatures(point, {
+      layers: ["listings"],
+    });
+
+    setFocusedListing(
+      features[0]?.properties?.listingId ??
+        features[0]?.properties?.cluster_id ??
+        ""
+    );
+  }, [hoveredCardCoordinates, setFocusedListing]);
+
+  useEffect(() => {
     if (map.default) {
       map.default.on("mouseenter", "listings", (event) => {
-        console.log(event);
         const listingId = getFocusedListingId(event.point, map.default);
         setFocusedListing(listingId);
       });
@@ -50,7 +71,7 @@ export const Mapbox = ({ children, loading }: Props) => {
         }
       });
     }
-  }, [map, setFocusedListing]);
+  }, [map.default, setFocusedListing]);
 
   const handleMoveEnd = (e: ViewStateChangeEvent) => {
     if (!map.default) return;
@@ -134,6 +155,7 @@ const getClusteredPoints = (
     }
   );
 };
+
 const getFocusedListingId = (point: Point, map?: MapRef) => {
   if (!map) return "";
   map.getCanvas().style.cursor = "pointer";

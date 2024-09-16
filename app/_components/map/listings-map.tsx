@@ -25,7 +25,7 @@ export const ListingsMap = () => {
           data={listings as GeoJSONFeatureCollection}
           cluster={true}
           clusterMaxZoom={25}
-          clusterRadius={30}
+          clusterRadius={25}
         >
           <Layer
             id="listings"

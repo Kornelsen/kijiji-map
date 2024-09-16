@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Popup } from "react-map-gl";
 import { ListingCard } from "../listings";
 import type { TSelectedListings } from "@/app/_types";
@@ -9,10 +8,6 @@ type Props = {
 };
 
 export const ListingPopup = ({ listing, onClose }: Props) => {
-  useEffect(() => {
-    console.log(listing.points[0].properties.listingId);
-  }, [listing.points[0].properties.listingId]);
-
   return (
     <Popup
       anchor="top"

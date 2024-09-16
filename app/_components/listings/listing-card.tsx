@@ -10,14 +10,14 @@ type Props = {
 };
 
 export const ListingCard = ({ listing }: Props) => {
-  const setFocusedListing = useGlobalStore((state) => state.setFocusedListing);
+  const { setHoveredCardCoordinates } = useGlobalStore((state) => state);
 
-  const handleFocus = (listingId: string) => () => {
-    setFocusedListing(listingId);
+  const handleFocus = (coordinates: [number, number]) => () => {
+    setHoveredCardCoordinates(coordinates);
   };
 
   const handleFocusEnd = () => {
-    setFocusedListing("");
+    setHoveredCardCoordinates(null);
   };
 
   const {
@@ -36,8 +36,8 @@ export const ListingCard = ({ listing }: Props) => {
     <Card
       key={listingId}
       className="w-full h-full flex flex-col"
-      onFocus={handleFocus(listingId)}
-      onMouseEnter={handleFocus(listingId)}
+      onFocus={handleFocus(listing.geometry.coordinates)}
+      onMouseEnter={handleFocus(listing.geometry.coordinates)}
       onMouseLeave={handleFocusEnd}
     >
       <div className="relative overflow-hidden before:absolute before:top-0 before:cont" />
