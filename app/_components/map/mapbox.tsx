@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import {
   Map as MapboxGL,
   useMap,
@@ -10,133 +10,127 @@ import { useFiltersStore, useGlobalStore } from "@/app/store";
 import { initialFilters } from "@/app/constants";
 import { Loader } from "../shared/loader";
 import type { GeoJSONPoint } from "@/app/_types";
-import {
-  Point,
-  type MapboxGeoJSONFeature,
-  type MapMouseEvent,
-  type GeoJSONSource,
-} from "mapbox-gl";
+import type { MapMouseEvent, GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import {
+  getClusteredPoints,
+  getFeaturesAtCoordinates,
+  getFocusedListingId,
+  shouldZoom,
+} from "@/app/_utils/map";
 
 type Props = {
   children?: React.ReactNode;
-  latitude?: number;
-  longitude?: number;
-  zoom?: number;
   loading?: boolean;
 };
 
 export const Mapbox = ({ children, loading }: Props) => {
-  const map = useMap();
+  const { default: map } = useMap();
   const updateFilters = useFiltersStore((state) => state.updateFilters);
-
   const { hoveredCardCoordinates, setFocusedListing, setSelectedListings } =
-    useGlobalStore((state) => state);
+    useGlobalStore();
 
   const mapRef = useRef<MapRef | null>(null);
 
-  useEffect(() => {
-    if (!hoveredCardCoordinates || !mapRef.current) {
-      setFocusedListing("");
-      return;
-    }
+  const projectPoint = useCallback(() => {
+    if (!hoveredCardCoordinates || !mapRef.current) return;
 
-    const map = mapRef.current.getMap();
-    const [longitude, latitude] = hoveredCardCoordinates;
-
-    const projectedPoint = map.project([longitude, latitude]);
-    const point = new Point(projectedPoint.x, projectedPoint.y);
-
-    const features = map.queryRenderedFeatures(point, {
-      layers: ["listings"],
-    });
-
-    setFocusedListing(
-      features[0]?.properties?.listingId ??
-        features[0]?.properties?.cluster_id ??
-        ""
+    const features = getFeaturesAtCoordinates(
+      hoveredCardCoordinates,
+      mapRef.current.getMap()
     );
+    setFocusedListing(features);
   }, [hoveredCardCoordinates, setFocusedListing]);
 
   useEffect(() => {
-    if (map.default) {
-      map.default.on("mouseenter", "listings", (event) => {
-        const listingId = getFocusedListingId(event.point, map.default);
-        setFocusedListing(listingId);
-      });
-      map.default.on("mouseleave", "listings", () => {
-        if (map.default) {
-          map.default.getCanvas().style.cursor = "";
-          setFocusedListing("");
-        }
-      });
-    }
-  }, [map.default, setFocusedListing]);
+    projectPoint();
+  }, [projectPoint]);
 
-  const handleMoveEnd = (e: ViewStateChangeEvent) => {
-    if (!map.default) return;
-    updateFilters({ bounds: map.default.getBounds() });
-  };
+  useEffect(() => {
+    if (!map) return;
 
-  const handleMapClick = (event: MapMouseEvent) => {
-    setSelectedListings(null);
-    if (!mapRef.current) return;
+    const handleMouseEnter = (event: MapMouseEvent) => {
+      setFocusedListing(getFocusedListingId(event.point, mapRef.current));
+    };
 
-    const map = mapRef.current.getMap();
+    const handleMouseLeave = () => {
+      map.getCanvas().style.cursor = "";
+      setFocusedListing("");
+    };
 
-    const features = map.queryRenderedFeatures(event.point, {
-      layers: ["listings"],
-    });
+    map.on("mouseenter", "listings", handleMouseEnter);
+    map.on("mouseleave", "listings", handleMouseLeave);
 
-    if (!features.length) {
+    return () => {
+      map.off("mouseenter", "listings", handleMouseEnter);
+      map.off("mouseleave", "listings", handleMouseLeave);
+    };
+  }, [map, setFocusedListing]);
+
+  const handleMoveEnd = useCallback(
+    (e: ViewStateChangeEvent) => {
+      if (!map) return;
+      updateFilters({ bounds: map.getBounds() });
+    },
+    [map, updateFilters]
+  );
+
+  const handleMapClick = useCallback(
+    (event: MapMouseEvent) => {
+      if (!mapRef.current) return;
       setSelectedListings(null);
-      return;
-    }
 
-    const feature = features[0];
-    const clusterId = feature.properties?.cluster_id;
-
-    const coordinates: [number, number] = [event.lngLat.lat, event.lngLat.lng];
-
-    if (clusterId) {
-      const clusterSource = map.getSource("point-source") as GeoJSONSource;
-      getClusteredPoints(clusterId, clusterSource, (points: GeoJSONPoint[]) => {
-        if (!points?.length) setSelectedListings(null);
-        else {
-          setSelectedListings({
-            points,
-            coordinates,
-          });
-        }
+      const mapInstance = mapRef.current.getMap();
+      const features = mapInstance.queryRenderedFeatures(event.point, {
+        layers: ["listings"],
       });
-    } else {
-      const points = [
-        {
-          type: "Feature",
-          properties: feature.properties,
-          geometry: {
-            type: "Point",
-            coordinates,
-          },
-        } as GeoJSONPoint,
+
+      if (!features.length) return;
+
+      const feature = features[0];
+      const clusterId = feature.properties?.cluster_id;
+      const isCluster = !!clusterId;
+
+      const coordinates: [number, number] = [
+        event.lngLat.lat,
+        event.lngLat.lng,
       ];
-      setTimeout(
-        () =>
-          setSelectedListings({
-            points,
-            coordinates,
-          }),
-        0
-      );
-    }
-  };
+
+      if (isCluster) {
+        const clusterSource = mapInstance.getSource(
+          "point-source"
+        ) as GeoJSONSource;
+
+        if (shouldZoom(mapInstance, features)) {
+          mapInstance.setCenter(event.lngLat);
+          mapInstance.zoomIn();
+          return;
+        }
+        getClusteredPoints(clusterId, clusterSource, (points) =>
+          setSelectedListings(
+            points.length
+              ? { points, coordinates: [event.lngLat.lat, event.lngLat.lng] }
+              : null
+          )
+        );
+      } else {
+        const points = [
+          {
+            type: "Feature",
+            properties: feature.properties,
+            geometry: { type: "Point", coordinates },
+          } as GeoJSONPoint,
+        ];
+        setSelectedListings({ points, coordinates });
+      }
+    },
+    [setSelectedListings]
+  );
 
   return (
     <MapboxGL
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-      initialViewState={{
-        bounds: initialFilters.bounds,
-      }}
+      initialViewState={{ bounds: initialFilters.bounds }}
       style={{ width: "100%", height: "100%" }}
       mapStyle="mapbox://styles/mapbox/streets-v11"
       onMoveEnd={handleMoveEnd}
@@ -151,41 +145,4 @@ export const Mapbox = ({ children, loading }: Props) => {
       {children}
     </MapboxGL>
   );
-};
-
-const getClusteredPoints = (
-  clusterId: number,
-  clusterSource: GeoJSONSource,
-  callback: (points: GeoJSONPoint[]) => void
-) => {
-  clusterSource.getClusterLeaves(
-    clusterId,
-    Number.POSITIVE_INFINITY,
-    0,
-    (err, features) => {
-      if (err) {
-        console.error("Error fetching cluster leaves:", err);
-        callback([]);
-      }
-      callback(features as GeoJSONPoint[]);
-    }
-  );
-};
-
-const getFocusedListingId = (point: Point, map?: MapRef) => {
-  if (!map) return "";
-  map.getCanvas().style.cursor = "pointer";
-  const features = map.queryRenderedFeatures(point, {
-    layers: ["listings"],
-  });
-
-  let listingId = "";
-
-  if (features.length > 0) {
-    const feature = features[0] as MapboxGeoJSONFeature;
-    listingId =
-      feature.properties?.listingId ?? feature.properties?.cluster_id ?? "";
-  }
-
-  return listingId;
 };
