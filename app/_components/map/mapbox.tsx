@@ -9,7 +9,7 @@ import {
 import { useFiltersStore, useGlobalStore } from "@/app/store";
 import { initialFilters } from "@/app/constants";
 import { Loader } from "../shared/loader";
-import type { GeoJSONPoint, PointProperties } from "@/app/_types";
+import type { GeoJSONPoint } from "@/app/_types";
 import type {
   Point,
   MapboxGeoJSONFeature,
@@ -143,11 +143,10 @@ const getFocusedListingId = (point: Point, map?: MapRef) => {
 
   let listingId = "";
 
-  console.log(features);
-
   if (features.length > 0) {
     const feature = features[0] as MapboxGeoJSONFeature;
-    listingId = feature?.properties?.listingId ?? "";
+    listingId =
+      feature.properties?.listingId ?? feature.properties?.cluster_id ?? "";
   }
 
   return listingId;

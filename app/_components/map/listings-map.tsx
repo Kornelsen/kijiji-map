@@ -36,6 +36,8 @@ export const ListingsMap = () => {
                 "case",
                 ["==", ["get", "listingId"], focusedListing],
                 "#6E66E6",
+                ["==", ["get", "cluster_id"], focusedListing],
+                "#6E66E6",
                 "#373373",
               ],
               "circle-stroke-width": 3,
