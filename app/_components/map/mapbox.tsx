@@ -79,10 +79,10 @@ export const Mapbox = ({ children, loading }: Props) => {
   };
 
   const handleMapClick = (event: MapMouseEvent) => {
+    setSelectedListings(null);
     if (!mapRef.current) return;
 
     const map = mapRef.current.getMap();
-    const lngLat = map.unproject(event.point);
 
     const features = map.queryRenderedFeatures(event.point, {
       layers: ["listings"],
@@ -96,6 +96,10 @@ export const Mapbox = ({ children, loading }: Props) => {
     const feature = features[0];
     const clusterId = feature.properties?.cluster_id;
 
+    console.log(feature);
+
+    const coordinates: [number, number] = [event.lngLat.lat, event.lngLat.lng];
+
     if (clusterId) {
       const clusterSource = map.getSource("point-source") as GeoJSONSource;
       getClusteredPoints(clusterId, clusterSource, (points: GeoJSONPoint[]) => {
@@ -103,15 +107,29 @@ export const Mapbox = ({ children, loading }: Props) => {
         else {
           setSelectedListings({
             points,
-            coordinates: [event.lngLat.lat, event.lngLat.lng],
+            coordinates,
           });
         }
       });
     } else {
-      setSelectedListings({
-        points: [{ properties: feature.properties } as GeoJSONPoint],
-        coordinates: [lngLat.lat, lngLat.lng],
-      });
+      const points = [
+        {
+          type: "Feature",
+          properties: feature.properties,
+          geometry: {
+            type: "Point",
+            coordinates,
+          },
+        } as GeoJSONPoint,
+      ];
+      setTimeout(
+        () =>
+          setSelectedListings({
+            points,
+            coordinates,
+          }),
+        0
+      );
     }
   };
 

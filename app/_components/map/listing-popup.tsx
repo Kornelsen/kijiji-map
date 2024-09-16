@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Popup } from "react-map-gl";
 import { ListingCard } from "../listings";
 import type { TSelectedListings } from "@/app/_types";
@@ -8,6 +9,12 @@ type Props = {
 };
 
 export const ListingPopup = ({ listing, onClose }: Props) => {
+  const listingCards = useMemo(() => {
+    return listing.points.map((listing) => (
+      <ListingCard key={listing.properties.listingId} listing={listing} />
+    ));
+  }, [listing.points]);
+
   return (
     <Popup
       anchor="top"
@@ -16,7 +23,7 @@ export const ListingPopup = ({ listing, onClose }: Props) => {
       onClose={onClose}
     >
       <div className="max-h-[200px] w-[415px] overflow-auto">
-        <ListingCard listing={listing.points[0]} />
+        {listingCards}
       </div>
     </Popup>
   );

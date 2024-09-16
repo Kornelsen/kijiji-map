@@ -19,10 +19,11 @@ export const getListingsData = async (
     const data = await db
       .collection("listing-features")
       .find<GeoJSONPoint>(mongoFilters)
-      .sort({ date: -1 })
+      .sort({ "properties.date": -1 })
       .project({
-        attributes: 0,
-        images: 0,
+        _id: 0,
+        "properties.attributes": 0,
+        "properties.images": 0,
       })
       .toArray();
 
