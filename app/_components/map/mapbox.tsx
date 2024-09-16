@@ -96,14 +96,12 @@ export const Mapbox = ({ children, loading }: Props) => {
     const feature = features[0];
     const clusterId = feature.properties?.cluster_id;
 
-    console.log(feature);
-
     const coordinates: [number, number] = [event.lngLat.lat, event.lngLat.lng];
 
     if (clusterId) {
       const clusterSource = map.getSource("point-source") as GeoJSONSource;
       getClusteredPoints(clusterId, clusterSource, (points: GeoJSONPoint[]) => {
-        if (!points.length) setSelectedListings(null);
+        if (!points?.length) setSelectedListings(null);
         else {
           setSelectedListings({
             points,
