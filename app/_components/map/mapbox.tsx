@@ -102,8 +102,10 @@ export const Mapbox = ({ children, loading }: Props) => {
         ) as GeoJSONSource;
 
         if (shouldZoom(mapInstance, features)) {
-          mapInstance.setCenter(event.lngLat);
-          mapInstance.zoomIn();
+          mapInstance.flyTo({
+            center: event.lngLat,
+            zoom: mapInstance.getZoom() + 1,
+          });
           return;
         }
         getClusteredPoints(clusterId, clusterSource, (points) =>
