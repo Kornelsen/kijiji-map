@@ -10,7 +10,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 export const getFeaturesAtCoordinates = (
   coordinates: [number, number],
-  mapInstance: MapInstance
+  mapInstance: MapInstance,
 ) => {
   const pointCoords = mapInstance.project(coordinates);
   const point = new Point(pointCoords.x, pointCoords.y);
@@ -28,7 +28,7 @@ export const getFeaturesAtCoordinates = (
 export const getClusteredPoints = (
   clusterId: number,
   clusterSource: GeoJSONSource,
-  callback: (points: ListingFeature[]) => void
+  callback: (points: ListingFeature[]) => void,
 ) => {
   clusterSource.getClusterLeaves(
     clusterId,
@@ -37,7 +37,7 @@ export const getClusteredPoints = (
     (err, features) => {
       if (err) return console.error("Error fetching cluster leaves:", err);
       callback(features as ListingFeature[]);
-    }
+    },
   );
 };
 
@@ -59,7 +59,7 @@ export const getFocusedListingId = (point: Point, map: MapRef | null) => {
 
 export const shouldZoom = (
   mapInstance: MapInstance,
-  features: MapboxGeoJSONFeature[]
+  features: MapboxGeoJSONFeature[],
 ) => {
   const zoom = mapInstance.getZoom();
   const clusterPointCount = features[0]?.properties?.point_count;
