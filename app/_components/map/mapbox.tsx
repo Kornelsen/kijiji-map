@@ -8,7 +8,6 @@ import {
 } from "react-map-gl";
 import { useFiltersStore, useGlobalStore } from "@/app/store";
 import { initialFilters } from "@/app/constants";
-import { Loader } from "../shared/loader";
 import type { GeoJSONPoint } from "@/app/_types";
 import type { MapMouseEvent, GeoJSONSource } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -18,6 +17,7 @@ import {
   getFocusedListingId,
   shouldZoom,
 } from "@/app/_utils/map";
+import { LoaderOverlay } from "./loader-overlay";
 
 type Props = {
   children?: React.ReactNode;
@@ -137,11 +137,7 @@ export const Mapbox = ({ children, loading }: Props) => {
       onClick={handleMapClick}
       ref={mapRef}
     >
-      {loading && (
-        <div className="absolute left-1/2 top-1/3 bg-white rounded p-2">
-          <Loader />
-        </div>
-      )}
+      {loading && <LoaderOverlay />}
       {children}
     </MapboxGL>
   );
