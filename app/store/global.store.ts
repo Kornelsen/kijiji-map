@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import type { Nullable, TSelectedListings } from "../_types";
+import type { Nullable, SelectedListings } from "../_types";
 
-type NullableListing = Nullable<TSelectedListings>;
+type NullableListing = Nullable<SelectedListings>;
 type NullableCoordinates = Nullable<[number, number]>;
 
 type State = {

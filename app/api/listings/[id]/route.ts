@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import mongoClient from "@/lib/mongodb";
-import type { GeoJSONPoint } from "@/app/_types";
+import type { ListingFeature } from "@/app/_types";
 
 export async function GET(
   req: Request,
@@ -18,7 +18,7 @@ export async function GET(
 
     const data = await db
       .collection("listing-features")
-      .findOne<GeoJSONPoint>({ "properties.listingId": params.id });
+      .findOne<ListingFeature>({ "properties.listingId": params.id });
 
     if (!data) {
       return new Response("Listing Not Found", {

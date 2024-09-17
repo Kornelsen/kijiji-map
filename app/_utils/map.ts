@@ -1,5 +1,5 @@
 import type { MapRef } from "react-map-gl";
-import type { GeoJSONPoint } from "@/app/_types";
+import type { ListingFeature } from "@/app/_types";
 import { Point } from "mapbox-gl";
 import type {
   GeoJSONSource,
@@ -28,7 +28,7 @@ export const getFeaturesAtCoordinates = (
 export const getClusteredPoints = (
   clusterId: number,
   clusterSource: GeoJSONSource,
-  callback: (points: GeoJSONPoint[]) => void
+  callback: (points: ListingFeature[]) => void
 ) => {
   clusterSource.getClusterLeaves(
     clusterId,
@@ -36,7 +36,7 @@ export const getClusteredPoints = (
     0,
     (err, features) => {
       if (err) return console.error("Error fetching cluster leaves:", err);
-      callback(features as GeoJSONPoint[]);
+      callback(features as ListingFeature[]);
     }
   );
 };

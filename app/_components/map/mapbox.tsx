@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useCallback } from "react";
+import type { MapMouseEvent, GeoJSONSource } from "mapbox-gl";
 import {
   Map as MapboxGL,
   useMap,
@@ -8,9 +9,7 @@ import {
 } from "react-map-gl";
 import { useFiltersStore, useGlobalStore } from "@/app/store";
 import { initialFilters } from "@/app/constants";
-import type { GeoJSONPoint } from "@/app/_types";
-import type { MapMouseEvent, GeoJSONSource } from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import type { ListingFeature } from "@/app/_types";
 import {
   getClusteredPoints,
   getFeaturesAtCoordinates,
@@ -18,6 +17,7 @@ import {
   shouldZoom,
 } from "@/app/_utils/map";
 import { LoaderOverlay } from "./loader-overlay";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 type Props = {
   children?: React.ReactNode;
@@ -119,7 +119,7 @@ export const Mapbox = ({ children, loading }: Props) => {
             type: "Feature",
             properties: feature.properties,
             geometry: { type: "Point", coordinates },
-          } as GeoJSONPoint,
+          } as ListingFeature,
         ];
         setSelectedListings({ points, coordinates });
       }

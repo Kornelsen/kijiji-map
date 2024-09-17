@@ -1,16 +1,14 @@
 import type {
-  GeoJSONFeatureCollection,
-  GeoJSONPoint,
+  ListingFeatureCollection,
+  ListingFeature,
   TFilters,
-  TListing,
 } from "@/app/_types";
-import type { Ad } from "kijiji-scraper";
 import type { Filter, Document } from "mongodb";
 import mongoClient from "@/lib/mongodb";
 
 export const getListingsData = async (
   filters: TFilters
-): Promise<GeoJSONFeatureCollection> => {
+): Promise<ListingFeatureCollection> => {
   try {
     const db = mongoClient.db("kijiji-map");
 
@@ -18,7 +16,7 @@ export const getListingsData = async (
 
     const data = await db
       .collection("listing-features")
-      .find<GeoJSONPoint>(mongoFilters)
+      .find<ListingFeature>(mongoFilters)
       .sort({ "properties.date": -1 })
       .project({
         _id: 0,
@@ -29,68 +27,12 @@ export const getListingsData = async (
 
     return {
       type: "FeatureCollection",
-      features: data as GeoJSONPoint[],
+      features: data as ListingFeature[],
     };
   } catch (error) {
     console.error("Error fetching listings data:", error);
     throw error;
   }
-};
-
-// The function to convert TListing array to GeoJSON FeatureCollection
-export function convertToGeoJSON(
-  listings: TListing[]
-): GeoJSONFeatureCollection {
-  const features: GeoJSONPoint[] = listings.map((listing) => ({
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: listing.location.coordinates,
-    },
-    properties: {
-      title: listing.title,
-      image: listing.image,
-      images: listing.images,
-      address: listing.address,
-      date: listing.date,
-      price: listing.price,
-      bedrooms: listing.bedrooms,
-      bathrooms: listing.bathrooms,
-      url: listing.url,
-      sqft: listing.sqft,
-      attributes: listing.attributes,
-      listingId: listing.listingId,
-    },
-  }));
-
-  return {
-    type: "FeatureCollection",
-    features,
-  };
-}
-
-export const mapToListing = (ad: Ad) => {
-  return {
-    listingId: ad.id,
-    title: ad.title,
-    image: ad.image,
-    images: ad.images,
-    address: ad.attributes.location.mapAddress,
-    date: ad.date,
-    location: {
-      coordinates: [
-        ad.attributes.location.longitude,
-        ad.attributes.location.latitude,
-      ],
-      type: "Point",
-    },
-    price: ad.attributes.price,
-    bedrooms: ad.attributes.numberbedrooms,
-    bathrooms: ad.attributes.numberbathrooms,
-    url: ad.url,
-    sqft: ad.attributes.areainfeet,
-    attributes: ad.attributes,
-  } as TListing;
 };
 
 export const getFilters = ({

@@ -1,43 +1,23 @@
-export type TListing = {
-  title: string;
-  image: string;
-  images: string[];
-  address: string;
-  date: Date;
-  location: {
-    coordinates: [number, number];
-    type: "Point";
-  };
-  price: string;
-  bedrooms: number;
-  bathrooms: number;
-  url: string;
-  sqft?: number;
-  attributes: Record<string, unknown>;
-  listingId: string;
+export type ListingFeatureCollection = {
+  type: "FeatureCollection";
+  features: ListingFeature[];
 };
 
-// Define the GeoJSON types
-export type GeoJSONPoint = {
+export type ListingFeature = {
   type: "Feature";
   geometry: {
     type: "Point";
     coordinates: [number, number];
   };
-  properties: PointProperties;
+  properties: ListingProperties;
 };
 
-export type GeoJSONFeatureCollection = {
-  type: "FeatureCollection";
-  features: GeoJSONPoint[];
-};
-
-export type TSelectedListings = {
-  points: GeoJSONPoint[];
+export type SelectedListings = {
+  points: ListingFeature[];
   coordinates: [number, number];
 };
 
-export type PointProperties = {
+type ListingProperties = {
   title: string;
   image: string;
   images: string[];

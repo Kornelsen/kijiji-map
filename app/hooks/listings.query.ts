@@ -1,4 +1,4 @@
-import type { GeoJSONFeatureCollection, TFilters } from "@/app/_types";
+import type { ListingFeatureCollection, TFilters } from "@/app/_types";
 import { useFiltersStore } from "@/app/store";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
@@ -12,7 +12,7 @@ const getListings = async (filters: TFilters) => {
 
 export const useListings = () => {
   const filters = useFiltersStore((state) => state.filters);
-  return useQuery<GeoJSONFeatureCollection>({
+  return useQuery<ListingFeatureCollection>({
     queryKey: ["listings", encodeURIComponent(JSON.stringify(filters))],
     queryFn: () => getListings(filters),
     placeholderData: keepPreviousData,

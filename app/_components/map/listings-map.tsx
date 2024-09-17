@@ -5,7 +5,7 @@ import { useGlobalStore } from "@/app/store/global.store";
 import { useListings } from "@/app/hooks";
 import { ListingPopup } from "./listing-popup";
 import { Mapbox } from "./mapbox";
-import type { GeoJSONFeatureCollection } from "@/app/_types";
+import type { ListingFeatureCollection } from "@/app/_types";
 
 export const ListingsMap = () => {
   const { data: listings = [], isFetching } = useListings();
@@ -22,7 +22,7 @@ export const ListingsMap = () => {
         <Source
           id="point-source"
           type="geojson"
-          data={listings as GeoJSONFeatureCollection}
+          data={listings as ListingFeatureCollection}
           cluster={true}
           clusterMaxZoom={25}
           clusterRadius={25}

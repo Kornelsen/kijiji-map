@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { Popup } from "react-map-gl";
 import { ListingCard } from "../listings";
-import type { TSelectedListings } from "@/app/_types";
+import type { SelectedListings } from "@/app/_types";
 
 type Props = {
-  listing: TSelectedListings;
+  listing: SelectedListings;
   onClose: () => void;
 };
 
