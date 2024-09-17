@@ -123,7 +123,7 @@ export const Mapbox = ({ children, loading }: Props) => {
             geometry: { type: "Point", coordinates },
           } as ListingFeature,
         ];
-        setSelectedListings({ points, coordinates });
+        setTimeout(() => setSelectedListings({ points, coordinates }), 0);
       }
     },
     [setSelectedListings],
