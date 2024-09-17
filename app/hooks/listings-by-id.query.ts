@@ -1,4 +1,4 @@
-import type { TListing } from "@/app/_types";
+import type { ListingFeature } from "@/app/_types";
 import { useQuery } from "@tanstack/react-query";
 
 const getListingById = async (id: string) => {
@@ -9,7 +9,7 @@ const getListingById = async (id: string) => {
 };
 
 export const useListingById = (id: string) => {
-  return useQuery<TListing>({
+  return useQuery<ListingFeature>({
     queryKey: ["listingsById", id],
     queryFn: () => getListingById(id),
   });

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import mongoClient from "@/lib/mongodb";
-import type { TListing } from "@/app/_types";
+import type { ListingFeature } from "@/app/_types";
 
 export async function GET(
   req: Request,
@@ -17,8 +17,14 @@ export async function GET(
     const db = mongoClient.db("kijiji-map");
 
     const data = await db
-      .collection("listings")
-      .findOne<TListing>({ listingId: params.id });
+      .collection("listing-features")
+      .findOne<ListingFeature>({ "properties.listingId": params.id });
+
+    if (!data) {
+      return new Response("Listing Not Found", {
+        status: 404,
+      });
+    }
 
     return NextResponse.json(data);
   } catch (error) {

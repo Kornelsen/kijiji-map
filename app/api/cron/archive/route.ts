@@ -12,8 +12,8 @@ export const POST = verifySignatureAppRouter(async () => {
     threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
     const items = await db
-      .collection("listings")
-      .deleteMany({ date: { $lt: threeMonthsAgo } });
+      .collection("listing-features")
+      .deleteMany({ "properties.date": { $lt: threeMonthsAgo } });
 
     console.info("Deletion process finished successfully");
     console.info(`${items.deletedCount} listings were deleted`);

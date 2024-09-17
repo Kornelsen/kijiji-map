@@ -1,13 +1,27 @@
 import { create } from "zustand";
-import type { Nullable } from "../_types";
+import type { Nullable, SelectedListings } from "../_types";
+
+type NullableListing = Nullable<SelectedListings>;
+type NullableCoordinates = Nullable<[number, number]>;
 
 type State = {
-  focusedListing: Nullable<string>;
-  setFocusedListing: (listingId: Nullable<string>) => void;
+  focusedListing: string;
+  setFocusedListing: (listingId: string) => void;
+  selectedListings: NullableListing;
+  setSelectedListings: (points: NullableListing) => void;
+  hoveredCardCoordinates: NullableCoordinates;
+  setHoveredCardCoordinates: (coordinates: NullableCoordinates) => void;
 };
 
 export const useGlobalStore = create<State>((set) => ({
-  focusedListing: null,
-  setFocusedListing: (listingId: Nullable<string>) =>
-    set({ focusedListing: listingId }),
+  focusedListing: "",
+  setFocusedListing: (listingId: string) => set({ focusedListing: listingId }),
+  selectedListings: null,
+  setSelectedListings: (points: NullableListing) => {
+    return set({ selectedListings: points });
+  },
+  hoveredCardCoordinates: null,
+  setHoveredCardCoordinates: (coordinates: NullableCoordinates) => {
+    return set({ hoveredCardCoordinates: coordinates });
+  },
 }));

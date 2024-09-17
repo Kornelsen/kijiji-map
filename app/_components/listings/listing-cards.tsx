@@ -8,28 +8,28 @@ import { Card, PaginationControl } from "../shared";
 const ITEMS_PER_PAGE = 10;
 
 export const ListingCards = () => {
-  const { data: listings = [] } = useListings();
+  const { data: listingsTest } = useListings();
+  const features = listingsTest?.features;
 
   const [page, setPage] = useState(0);
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: reset page when listings updated
   useEffect(() => {
-    setPage(0);
-  }, [listings]);
+    features && setPage(0);
+  }, [features]);
 
-  const totalPages = Math.ceil((listings?.length || 0) / ITEMS_PER_PAGE);
-  const listingsToDisplay = listings?.slice(
+  const totalPages = Math.ceil((features?.length || 0) / ITEMS_PER_PAGE);
+  const listingsToDisplay = features?.slice(
     page * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE + ITEMS_PER_PAGE,
   );
 
   return (
     <div className="grid grid-cols-1 gap-3">
-      {listingsToDisplay?.map((listing) => (
-        <ListingCard key={listing.listingId} listing={listing} />
+      {listingsToDisplay?.map((feature) => (
+        <ListingCard key={feature.properties.listingId} listing={feature} />
       ))}
       <Card className="p-3 sticky">
         <PaginationControl

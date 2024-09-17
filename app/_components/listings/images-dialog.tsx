@@ -26,7 +26,7 @@ export const ImagesDialog = ({ id, image, title }: Props) => {
   const handleOpen = () => setDialogOpen(true);
   const handleOpenChange = (open: boolean) => {
     setDialogOpen(open);
-    setFocusedListing(null);
+    setFocusedListing("");
   };
 
   return (
@@ -58,7 +58,7 @@ const Content = ({ id }: { id: string }) => {
 
   // TODO: add loader
   if (!listing || isLoading) return null;
-  const { images, url } = listing;
+  const { images, url } = listing.properties;
 
   return (
     <>
