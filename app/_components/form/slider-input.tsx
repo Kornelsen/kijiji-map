@@ -75,7 +75,7 @@ type InputProps = Pick<Props, "label" | "onChange"> & {
 const NumericalInputs = ({ label, value, onChange }: InputProps) => {
   const [leftValue, rightValue] = value;
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1">
       <Input
         name="min"
         label={`Min ${label}`}
@@ -99,7 +99,7 @@ const NumericalInputs = ({ label, value, onChange }: InputProps) => {
 const CurrencyInputs = ({ label, value, onChange }: InputProps) => {
   const [leftValue, rightValue] = value;
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-1">
       <CurrencyInput
         name="min"
         label={`Min ${label}`}
