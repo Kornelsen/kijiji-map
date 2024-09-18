@@ -4,7 +4,7 @@ import type { ListingFeature } from "@/app/_types";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   if (!params.id) {
     return new Response("Bad Request", {
