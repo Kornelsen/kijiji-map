@@ -32,19 +32,15 @@ export const Mapbox = ({ children, loading }: Props) => {
 
   const mapRef = useRef<MapRef | null>(null);
 
-  const projectPoint = useCallback(() => {
-    if (!hoveredCardCoordinates || !mapRef.current) return;
-
-    const features = getFeaturesAtCoordinates(
-      hoveredCardCoordinates,
-      mapRef.current.getMap(),
-    );
-    setFocusedListing(features);
-  }, [hoveredCardCoordinates, setFocusedListing]);
-
   useEffect(() => {
-    projectPoint();
-  }, [projectPoint]);
+    if (hoveredCardCoordinates && mapRef.current) {
+      const features = getFeaturesAtCoordinates(
+        hoveredCardCoordinates,
+        mapRef.current.getMap()
+      );
+      setFocusedListing(features);
+    }
+  }, [hoveredCardCoordinates, setFocusedListing]);
 
   useEffect(() => {
     if (!map) return;
@@ -72,7 +68,7 @@ export const Mapbox = ({ children, loading }: Props) => {
       if (!map) return;
       updateFilters({ bounds: map.getBounds() });
     },
-    [map, updateFilters],
+    [map, updateFilters]
   );
 
   const handleMapClick = useCallback(
@@ -97,10 +93,6 @@ export const Mapbox = ({ children, loading }: Props) => {
       ];
 
       if (isCluster) {
-        const clusterSource = mapInstance.getSource(
-          "point-source",
-        ) as GeoJSONSource;
-
         if (shouldZoom(mapInstance, features)) {
           mapInstance.flyTo({
             center: event.lngLat,
@@ -108,12 +100,17 @@ export const Mapbox = ({ children, loading }: Props) => {
           });
           return;
         }
+
+        const clusterSource = mapInstance.getSource(
+          "point-source"
+        ) as GeoJSONSource;
+
         getClusteredPoints(clusterId, clusterSource, (points) =>
           setSelectedListings(
             points.length
               ? { points, coordinates: [event.lngLat.lat, event.lngLat.lng] }
-              : null,
-          ),
+              : null
+          )
         );
       } else {
         const points = [
@@ -126,7 +123,7 @@ export const Mapbox = ({ children, loading }: Props) => {
         setTimeout(() => setSelectedListings({ points, coordinates }), 0);
       }
     },
-    [setSelectedListings],
+    [setSelectedListings]
   );
 
   return (
