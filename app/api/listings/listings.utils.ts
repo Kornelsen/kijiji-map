@@ -7,10 +7,10 @@ import type { Filter, Document } from "mongodb";
 import mongoClient from "@/lib/mongodb";
 
 export const getListingsData = async (
-  filters: TFilters,
+  filters: TFilters
 ): Promise<ListingFeatureCollection> => {
   try {
-    const db = mongoClient.db("kijiji-map");
+    const db = mongoClient.db(process.env.DB_NAME);
 
     const mongoFilters = getFilters(filters);
 
@@ -72,7 +72,7 @@ export const getFilters = ({
     const bedroomFilters = bedrooms.map((bedroom) =>
       bedroom === 4
         ? { "properties.bedrooms": { $gte: 4 } }
-        : { "properties.bedrooms": bedroom },
+        : { "properties.bedrooms": bedroom }
     );
     filters.$and?.push({ $or: bedroomFilters });
   }
@@ -81,7 +81,7 @@ export const getFilters = ({
     const bathroomFilters = bathrooms.map((bathroom) =>
       bathroom === 4
         ? { "properties.bathrooms": { $gte: 4 } }
-        : { "properties.bathrooms": bathroom },
+        : { "properties.bathrooms": bathroom }
     );
     filters.$and?.push({ $or: bathroomFilters });
   }

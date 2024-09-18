@@ -36,7 +36,7 @@ export const Mapbox = ({ children, loading }: Props) => {
     if (hoveredCardCoordinates && mapRef.current) {
       const features = getFeaturesAtCoordinates(
         hoveredCardCoordinates,
-        mapRef.current.getMap()
+        mapRef.current.getMap(),
       );
       setFocusedListing(features);
     }
@@ -68,7 +68,7 @@ export const Mapbox = ({ children, loading }: Props) => {
       if (!map) return;
       updateFilters({ bounds: map.getBounds() });
     },
-    [map, updateFilters]
+    [map, updateFilters],
   );
 
   const handleMapClick = useCallback(
@@ -102,15 +102,15 @@ export const Mapbox = ({ children, loading }: Props) => {
         }
 
         const clusterSource = mapInstance.getSource(
-          "point-source"
+          "point-source",
         ) as GeoJSONSource;
 
         getClusteredPoints(clusterId, clusterSource, (points) =>
           setSelectedListings(
             points.length
               ? { points, coordinates: [event.lngLat.lat, event.lngLat.lng] }
-              : null
-          )
+              : null,
+          ),
         );
       } else {
         const points = [
@@ -123,7 +123,7 @@ export const Mapbox = ({ children, loading }: Props) => {
         setTimeout(() => setSelectedListings({ points, coordinates }), 0);
       }
     },
-    [setSelectedListings]
+    [setSelectedListings],
   );
 
   return (

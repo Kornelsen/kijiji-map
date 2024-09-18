@@ -4,7 +4,7 @@ import type { ListingFeature } from "@/app/_types";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   if (!params.id) {
     return new Response("Bad Request", {
@@ -14,7 +14,7 @@ export async function GET(
 
   try {
     // TODO: use env var
-    const db = mongoClient.db("kijiji-map");
+    const db = mongoClient.db(process.env.DB_NAME);
 
     const data = await db
       .collection("listing-features")

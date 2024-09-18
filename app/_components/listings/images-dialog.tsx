@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { Button } from "../shared";
+import { Button, Loader } from "../shared";
 import { ListingThumbnail } from "./listing-thumbnail";
 import { ImageCarousel } from "../shared";
 import { useGlobalStore } from "@/app/store";
@@ -56,7 +56,12 @@ export const ImagesDialog = ({ id, image, title }: Props) => {
 const Content = ({ id }: { id: string }) => {
   const { data: listing, isLoading } = useListingById(id);
 
-  // TODO: add loader
+  if (isLoading)
+    return (
+      <div className="m-auto">
+        <Loader />
+      </div>
+    );
   if (!listing || isLoading) return null;
   const { images, url } = listing.properties;
 

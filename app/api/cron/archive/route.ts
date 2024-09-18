@@ -6,7 +6,7 @@ export const POST = verifySignatureAppRouter(async () => {
   try {
     console.info("Starting deletion process");
     await mongoClient.connect();
-    const db = mongoClient.db("kijiji-map");
+    const db = mongoClient.db(process.env.DB_NAME);
 
     const threeMonthsAgo = new Date();
     threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
