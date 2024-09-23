@@ -1,8 +1,10 @@
 ## Kijiji Map
 
-The aim of this project was to enhance the rental search experience on Kijiji by providing a map view. The app enables users to visually explore available rentals through an interactive map, making it easier to find the perfect place.
+Enhances the rental search experience on Kijiji by providing a map view. The app enables users to visually explore available rentals through an interactive map, making it easier to find the perfect place.
 
-[View it Live](https://kijiji-map.vercel.app/)
+Kijiji listing data is scraped from the original site using [kijiji-map-scraper](https://github.com/Kornelsen/kijiji-map-scraper)
+
+[View it Live](https://kijiji-map.vercel.app/) 
 
 ## Built With
 
