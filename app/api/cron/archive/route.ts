@@ -41,16 +41,24 @@ export const POST = verifySignatureAppRouter(async () => {
       .find(filter, { projection })
       .toArray();
 
+    if (!itemsToArchive.length) {
+      console.info("No listings to archive");
+      return Response.json({ archivedCount: 0 });
+    }
+
     console.info(`Found ${itemsToArchive.length} listings to archive`);
 
     const idsToDelete = await bulkInsert(destinationCollection, itemsToArchive);
 
     console.info(`Archived ${idsToDelete.length} listings`);
+
+    if (!idsToDelete.length) return Response.json({ archivedCount: 0 });
+
     console.info("Deleting archived listings from source collection");
 
     await sourceCollection.deleteMany({ _id: { $in: idsToDelete } });
 
-    console.info("Deletion process finished successfully");
+    console.info("Archival process finished successfully");
 
     return Response.json({ archivedCount: itemsToArchive.length });
   } catch (e) {
@@ -71,6 +79,6 @@ const bulkInsert = async (
     bulkInsert.find({ _id: id }).upsert().replaceOne(doc);
     insertIds.push(id);
   }
-  await bulkInsert.execute();
+  if (insertIds.length) await bulkInsert.execute();
   return insertIds;
 };
