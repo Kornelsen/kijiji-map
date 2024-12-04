@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import mongoClient from "@/lib/mongodb";
 import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
 import type { Collection, Document, WithId } from "mongodb";

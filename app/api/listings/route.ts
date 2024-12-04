@@ -3,9 +3,9 @@ import type { TFilters } from "../../_types";
 import { getFilters, getListingsData } from "./listings.utils";
 
 export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const searchParams = new URLSearchParams(url.search);
   try {
-    const url = new URL(req.url);
-    const searchParams = new URLSearchParams(url.search);
     const filtersParam = searchParams.get("filters");
 
     if (!filtersParam)
