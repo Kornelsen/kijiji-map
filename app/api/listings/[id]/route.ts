@@ -28,6 +28,8 @@ export async function GET(
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching data:", error);
-    return NextResponse.error();
+    return new Response("Something went wrong", {
+      status: 500,
+    });
   }
 }

@@ -33,6 +33,8 @@ export async function GET(req: Request) {
     }
   } catch (error) {
     console.error("Error fetching data:", error);
-    return NextResponse.error();
+    return new Response("Something went wrong", {
+      status: 500,
+    });
   }
 }

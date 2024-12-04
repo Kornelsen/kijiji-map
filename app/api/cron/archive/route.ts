@@ -63,7 +63,9 @@ export const POST = verifySignatureAppRouter(async () => {
     return Response.json({ archivedCount: itemsToArchive.length });
   } catch (e) {
     console.error(e);
-    return NextResponse.error();
+    return new Response("Something went wrong", {
+      status: 500,
+    });
   }
 });
 
