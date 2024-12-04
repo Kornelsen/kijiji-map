@@ -7,27 +7,34 @@ import type { Filter, Document } from "mongodb";
 import mongoClient from "@/lib/mongodb";
 
 export const getListingsData = async (
-  filters: TFilters,
+  filters: Filter<Document>,
+  limit?: number,
+  skip?: number
 ): Promise<ListingFeatureCollection> => {
   try {
     const db = mongoClient.db(process.env.DB_NAME);
 
-    const mongoFilters = getFilters(filters);
+    const totalCount = await db
+      .collection("listing-features")
+      .countDocuments(filters);
 
     const data = await db
       .collection("listing-features")
-      .find<ListingFeature>(mongoFilters)
+      .find<ListingFeature>(filters)
       .sort({ "properties.date": -1 })
       .project({
         _id: 0,
         "properties.attributes": 0,
         "properties.images": 0,
       })
+      .skip(skip !== undefined ? skip : 0)
+      .limit(limit !== undefined ? limit : 0)
       .toArray();
 
     return {
       type: "FeatureCollection",
       features: data as ListingFeature[],
+      totalCount,
     };
   } catch (error) {
     console.error("Error fetching listings data:", error);
@@ -72,7 +79,7 @@ export const getFilters = ({
     const bedroomFilters = bedrooms.map((bedroom) =>
       bedroom === 4
         ? { "properties.bedrooms": { $gte: 4 } }
-        : { "properties.bedrooms": bedroom },
+        : { "properties.bedrooms": bedroom }
     );
     filters.$and?.push({ $or: bedroomFilters });
   }
@@ -81,7 +88,7 @@ export const getFilters = ({
     const bathroomFilters = bathrooms.map((bathroom) =>
       bathroom === 4
         ? { "properties.bathrooms": { $gte: 4 } }
-        : { "properties.bathrooms": bathroom },
+        : { "properties.bathrooms": bathroom }
     );
     filters.$and?.push({ $or: bathroomFilters });
   }
@@ -97,5 +104,6 @@ export const getFilters = ({
     }
   }
 
+  if (!filters.$and?.length) return {};
   return filters;
 };

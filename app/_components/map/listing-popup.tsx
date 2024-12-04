@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { Popup } from "react-map-gl";
 import { ListingCard } from "../listings";
 import type { SelectedListings } from "@/app/_types";
+import { Loader } from "../shared";
+import { useListingById } from "@/app/hooks";
 
 type Props = {
   listing: SelectedListings;
@@ -11,7 +13,10 @@ type Props = {
 export const ListingPopup = ({ listing, onClose }: Props) => {
   const listingCards = useMemo(() => {
     return listing.points.map((listing) => (
-      <ListingCard key={listing.properties.listingId} listing={listing} />
+      <PopupListingCard
+        key={listing.properties.listingId}
+        listingId={listing.properties.listingId}
+      />
     ));
   }, [listing.points]);
 
@@ -27,4 +32,18 @@ export const ListingPopup = ({ listing, onClose }: Props) => {
       </div>
     </Popup>
   );
+};
+
+const PopupListingCard = ({ listingId }: { listingId: string }) => {
+  const { data: listing, isLoading } = useListingById(listingId);
+
+  if (isLoading)
+    return (
+      <div className="m-auto">
+        <Loader />
+      </div>
+    );
+  if (!listing) return null;
+
+  return <ListingCard listing={listing} />;
 };

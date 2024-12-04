@@ -8,4 +8,6 @@ export type TFilters = {
   bedrooms: number[];
   bathrooms: number[];
   misc: string[];
+  skip?: number;
+  limit?: number;
 };
