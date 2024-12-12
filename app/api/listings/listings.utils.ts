@@ -6,11 +6,17 @@ import type {
 import type { Filter, Document } from "mongodb";
 import mongoClient from "@/lib/mongodb";
 
-export const getListingsData = async (
-  filters: Filter<Document>,
-  limit?: number,
-  skip?: number
-): Promise<ListingFeatureCollection> => {
+type GetListingsParams = {
+  filters: Filter<Document>;
+  limit?: number;
+  skip?: number;
+};
+
+export const getListingsData = async ({
+  filters,
+  limit,
+  skip,
+}: GetListingsParams): Promise<ListingFeatureCollection> => {
   try {
     const db = mongoClient.db(process.env.DB_NAME);
 
@@ -35,6 +41,34 @@ export const getListingsData = async (
       type: "FeatureCollection",
       features: data as ListingFeature[],
       totalCount,
+    };
+  } catch (error) {
+    console.error("Error fetching listings data:", error);
+    throw error;
+  }
+};
+
+type GetFeaturesParams = {
+  filters: Filter<Document>;
+};
+
+export const getFeaturesData = async ({ filters }: GetFeaturesParams) => {
+  try {
+    const db = mongoClient.db(process.env.DB_NAME);
+
+    const data = await db
+      .collection("listing-features")
+      .find<ListingFeature>(filters)
+      .project({
+        geometry: 1,
+        "properties.listingId": 1,
+        type: 1,
+      })
+      .toArray();
+
+    return {
+      type: "FeatureCollection",
+      features: data as ListingFeature[],
     };
   } catch (error) {
     console.error("Error fetching listings data:", error);

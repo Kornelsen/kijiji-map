@@ -2,13 +2,13 @@
 import { Layer, MapProvider, Source } from "react-map-gl";
 
 import { useGlobalStore } from "@/app/store/global.store";
-import { useListings } from "@/app/hooks";
+import { useFeatures } from "@/app/hooks";
 import { ListingPopup } from "./listing-popup";
 import { Mapbox } from "./mapbox";
 import type { ListingFeatureCollection } from "@/app/_types";
 
 export const ListingsMap = () => {
-  const { data: listings = [], isFetching } = useListings();
+  const { data: listings = [], isFetching } = useFeatures();
   const { focusedListing, selectedListings, setSelectedListings } =
     useGlobalStore((state) => state);
 
