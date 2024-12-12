@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { Listings } from "./_components/listings";
 import { initialFilters } from "./constants";
-import { getFeaturesData } from "./api/listings";
+import { getFeaturesData, getListingsData } from "./api/listings";
 
 export default async function Home() {
   const queryClient = new QueryClient();
@@ -16,6 +16,17 @@ export default async function Home() {
       getFeaturesData({
         filters: initialFilters,
       }),
+  });
+
+  // TODO: use const for the limit value
+  const initialListingFilters = { ...initialFilters, limit: 10 };
+
+  await queryClient.prefetchQuery({
+    queryKey: [
+      "paginated-listings",
+      encodeURIComponent(JSON.stringify(initialListingFilters)),
+    ],
+    queryFn: () => getListingsData({ filters: initialListingFilters }),
   });
 
   return (
