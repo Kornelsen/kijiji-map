@@ -1,6 +1,4 @@
 import type { Nullable } from "@/app/_types";
-import MaskedInput from "react-text-mask";
-import { createNumberMask } from "text-mask-addons";
 
 interface CurrencyInputProps {
   name: string;
@@ -16,15 +14,10 @@ interface CurrencyInputProps {
   placeholder?: string;
 }
 
-const maskOptions = {
-  prefix: "$",
-  includeThousandsSeparator: true,
-  thousandsSeparatorSymbol: ",",
-  allowDecmial: false,
-  integerLimit: 7,
-  allowNegative: false,
-  allowLeadingZeroes: false,
-};
+const MAX_DIGITS = 7;
+
+const formatCurrency = (value: Nullable<number> | undefined) =>
+  value ? `$${value.toLocaleString("en-CA")}` : "";
 
 export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   name,
@@ -33,26 +26,22 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   onChange,
   placeholder,
 }) => {
-  const currencyMask = createNumberMask(maskOptions);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    let numericValue: Nullable<number> = +value
-      .substring(1, value.length)
-      .replaceAll(",", "");
-    numericValue = numericValue > 0 ? numericValue : null;
+    const digits = value.replace(/\D/g, "").slice(0, MAX_DIGITS);
+    const numericValue = +digits > 0 ? +digits : null;
     onChange({ name, value: numericValue });
   };
   return (
     <div className="flex flex-col gap-1 w-full">
       <label htmlFor={name}>{label}</label>
-      <MaskedInput
+      <input
+        id={name}
         name={name}
-        mask={currencyMask}
         inputMode="numeric"
         className="border rounded px-2 py-1 text-black"
         onChange={handleChange}
-        value={value ?? undefined}
+        value={formatCurrency(value)}
         placeholder={placeholder}
       />
     </div>

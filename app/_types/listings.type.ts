@@ -1,6 +1,7 @@
 export type ListingFeatureCollection = {
   type: "FeatureCollection";
   features: ListingFeature[];
+  totalCount: number;
 };
 
 export type ListingFeature = {

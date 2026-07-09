@@ -23,15 +23,16 @@ export const ImageCarousel = ({
         const key = `${image}-${index}`;
         return (
           <CarouselItem key={key} className="items-center">
-            <Image
-              src={image}
-              alt="listing image"
-              width={height}
-              height={height}
-              style={{ width, height }}
-              placeholder={notFoundDataUrl}
-              className="mx-auto"
-            />
+            <div className="relative mx-auto" style={{ width, height }}>
+              <Image
+                src={image}
+                alt="listing image"
+                fill
+                sizes={`${width}px`}
+                placeholder={notFoundDataUrl}
+                className="object-contain"
+              />
+            </div>
           </CarouselItem>
         );
       })}

@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import mongoClient from "@/lib/mongodb";
 import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
 import type { Collection, Document, WithId } from "mongodb";
@@ -63,7 +62,9 @@ export const POST = verifySignatureAppRouter(async () => {
     return Response.json({ archivedCount: itemsToArchive.length });
   } catch (e) {
     console.error(e);
-    return NextResponse.error();
+    return new Response("Something went wrong", {
+      status: 500,
+    });
   }
 });
 

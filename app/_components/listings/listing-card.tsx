@@ -7,9 +7,33 @@ import { Card } from "../shared";
 
 type Props = {
   listing: ListingFeature;
+  priority?: boolean;
+  compact?: boolean;
 };
 
-export const ListingCard = ({ listing }: Props) => {
+// price arrives from the scraper as a numeric string, e.g. "1950"
+const formatPrice = (price: string) => {
+  const numeric = Number(price);
+  return Number.isFinite(numeric)
+    ? `$${numeric.toLocaleString("en-CA")}/mo`
+    : `$${price}/mo`;
+};
+
+const getStats = ({
+  bedrooms,
+  bathrooms,
+  sqft,
+}: ListingFeature["properties"]) => {
+  const stats = [];
+  if (bedrooms === 0) stats.push("Studio");
+  else if (bedrooms != null)
+    stats.push(`${bedrooms} ${bedrooms === 1 ? "bd" : "bds"}`);
+  if (bathrooms != null) stats.push(`${bathrooms} ba`);
+  if (sqft) stats.push(`${sqft} sqft`);
+  return stats;
+};
+
+export const ListingCard = ({ listing, priority, compact }: Props) => {
   const { setHoveredCardCoordinates } = useGlobalStore((state) => state);
 
   const handleFocus = (coordinates: [number, number]) => () => {
@@ -20,17 +44,9 @@ export const ListingCard = ({ listing }: Props) => {
     setHoveredCardCoordinates(null);
   };
 
-  const {
-    listingId,
-    image,
-    title,
-    price,
-    address,
-    bedrooms,
-    bathrooms,
-    sqft,
-    date,
-  } = listing.properties;
+  const { listingId, image, title, price, address, date } = listing.properties;
+
+  const stats = getStats(listing.properties);
 
   return (
     <Card
@@ -40,22 +56,49 @@ export const ListingCard = ({ listing }: Props) => {
       onMouseEnter={handleFocus(listing.geometry.coordinates)}
       onMouseLeave={handleFocusEnd}
     >
-      <div className="relative overflow-hidden before:absolute before:top-0 before:cont" />
-      <div className="flex flex-row w-full">
-        <div className="flex-1">
-          <ImagesDialog id={listingId} image={image} title={title} />
-        </div>
-        <div className="flex flex-col py-2 px-3 h-full w-full">
-          <h2 className="text-lg font-bold">${price}</h2>
-          <p className="text-xs">{formatAddress(address)}</p>
-        </div>
+      <div className="relative">
+        <ImagesDialog
+          id={listingId}
+          image={image}
+          title={title}
+          priority={priority}
+        />
+        {/* computed from now(), so the SSR'd text can lag the client's */}
+        <span
+          className="absolute top-2 left-2 rounded bg-white/95 px-2 py-0.5 text-xs font-medium shadow pointer-events-none"
+          suppressHydrationWarning
+        >
+          {getRelativeTime(new Date(date))}
+        </span>
       </div>
-      <div className="flex flex-row px-2 py-1 bg-slate-100 items-center">
-        <p className="text-xs">{getRelativeTime(new Date(date))}</p>
-        <p className="text-xs ml-auto">
-          {`${bedrooms ?? "?"} Beds • ${bathrooms ?? "?"} Baths${
-            sqft ? ` • ${sqft} sqft` : ""
-          }`}
+      <div
+        className={
+          compact
+            ? "flex flex-col px-2.5 py-1.5"
+            : "flex flex-col gap-0.5 px-3 py-2"
+        }
+      >
+        <h2 className={compact ? "text-base font-bold" : "text-xl font-bold"}>
+          {formatPrice(price)}
+        </h2>
+        {!!stats.length && (
+          <p className={compact ? "text-xs font-medium" : "text-sm font-medium"}>
+            {stats.map((stat, index) => (
+              <span key={stat}>
+                {index > 0 && <span className="mx-1.5 text-neutral-300">|</span>}
+                {stat}
+              </span>
+            ))}
+          </p>
+        )}
+        <p
+          className={
+            compact
+              ? "text-xs text-neutral-500 truncate"
+              : "text-sm text-neutral-500 truncate"
+          }
+        >
+          {formatAddress(address)}
         </p>
       </div>
     </Card>

@@ -4,7 +4,7 @@ Enhances the rental search experience on Kijiji by providing a map view. The app
 
 Kijiji listing data is scraped from the original site using [kijiji-map-scraper](https://github.com/Kornelsen/kijiji-map-scraper)
 
-[View it Live](https://kijiji-map.vercel.app/) 
+[View it Live](https://kijiji-map.vercel.app/)
 
 ## Built With
 
@@ -22,21 +22,20 @@ Kijiji listing data is scraped from the original site using [kijiji-map-scraper]
 First, install dependencies:
 
 ```bash
-yarn
+pnpm i
 ```
 
 First, run the development server:
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
 ## Acknowledgements
 
- - [kijiji-scraper](https://github.com/mwpenny/kijiji-scraper)
+- [kijiji-scraper](https://github.com/mwpenny/kijiji-scraper)
 
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/

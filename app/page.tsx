@@ -5,15 +5,40 @@ import {
 } from "@tanstack/react-query";
 import { Listings } from "./_components/listings";
 import { initialFilters } from "./constants";
-import { getListingsData } from "./api/listings";
+import { getFeaturesData, getFilters, getListingsData } from "./api/listings";
+import {
+  PAGE_SIZE,
+  getFeaturesFilters,
+  getFeaturesQueryKey,
+  getPaginatedListingsFilters,
+  getPaginatedListingsQueryKey,
+} from "./hooks/query-keys";
+
+// statically prerendered with baked listing data; keep it fresh-ish — the
+// client still refetches on mount once staleTime lapses
+export const revalidate = 300;
 
 export default async function Home() {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["listings", encodeURIComponent(JSON.stringify(initialFilters))],
-    queryFn: () => getListingsData(initialFilters),
-  });
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: getFeaturesQueryKey(initialFilters),
+      queryFn: () =>
+        getFeaturesData({
+          filters: getFilters(getFeaturesFilters(initialFilters)),
+        }),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: getPaginatedListingsQueryKey(initialFilters),
+      queryFn: () =>
+        getListingsData({
+          filters: getFilters(getPaginatedListingsFilters(initialFilters)),
+          limit: PAGE_SIZE,
+          skip: 0,
+        }),
+    }),
+  ]);
 
   return (
     <main>

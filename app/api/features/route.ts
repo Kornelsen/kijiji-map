@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { TFilters } from "../../_types";
-import { getFilters, getListingsData } from "./listings.utils";
+import { getFeaturesData, getFilters } from "../listings";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -18,10 +18,8 @@ export async function GET(req: Request) {
       const parsedParams: TFilters = JSON.parse(decodedParams);
       const filters = getFilters(parsedParams);
 
-      const data = await getListingsData({
+      const data = await getFeaturesData({
         filters,
-        limit: parsedParams.limit,
-        skip: parsedParams.skip,
       });
 
       return NextResponse.json(data);

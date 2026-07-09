@@ -18,9 +18,10 @@ type Props = {
   id: string;
   image: string;
   title: string;
+  priority?: boolean;
 };
 
-export const ImagesDialog = ({ id, image, title }: Props) => {
+export const ImagesDialog = ({ id, image, title, priority }: Props) => {
   const setFocusedListing = useGlobalStore((state) => state.setFocusedListing);
   const [dialogOpen, setDialogOpen] = useState(false);
   const handleOpen = () => setDialogOpen(true);
@@ -35,9 +36,9 @@ export const ImagesDialog = ({ id, image, title }: Props) => {
         <ListingThumbnail
           image={image}
           alt={title}
-          height={127}
-          width={179}
           onClick={handleOpen}
+          priority={priority}
+          className="rounded-t"
         />
       </DialogTrigger>
       <DialogContent

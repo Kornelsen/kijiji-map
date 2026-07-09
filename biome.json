@@ -12,6 +12,6 @@
     }
   },
   "files": {
-    "ignore": ["node_modules/*m", ".next/*", "yarn.lock"]
+    "ignore": ["node_modules/*", ".next/*", "pnpm-lock.yaml"]
   }
 }
