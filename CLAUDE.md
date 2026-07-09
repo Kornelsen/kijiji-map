@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Next.js 14 (App Router) single-page app that displays scraped Kijiji rental listings on an interactive Mapbox map with filters. Listing data is scraped by a separate repo ([kijiji-map-scraper](https://github.com/Kornelsen/kijiji-map-scraper)) into MongoDB; this app only reads (and archives) that data. Deployed on Vercel.
+A Next.js 14 (App Router) single-page app that displays scraped Kijiji rental listings on an interactive Mapbox map with filters. Listing data is scraped by a separate repo ([kijiji-map-scraper](https://github.com/Kornelsen/kijiji-map-scraper)) into MongoDB; this app only reads that data. Deployed on Vercel.
 
 ## Commands
 
@@ -35,7 +35,6 @@ Other things worth knowing before digging in:
 
 - **Documents are GeoJSON Features** (`ListingFeature` in `app/_types/listings.type.ts`): geometry + `properties.*`. Mongo queries filter on `properties.<field>` paths.
 - **SSR**: `app/page.tsx` prefetches the features query server-side (calling `getFeaturesData` directly, not over HTTP) and hydrates it into React Query.
-- **Cron** (`app/api/cron/archive/route.ts`): QStash-triggered (signature-verified) job that moves listings older than 2 months to a `listings-archive` collection with a slimmed projection.
 - **Components** (`app/_components/`): `ui/` is shadcn-generated primitives (config in `components.json`); `shared/`, `form/`, `listings/`, `map/` are app components. Barrel `index.ts` files re-export each folder.
 - Path alias `@/*` maps to the repo root. The Mongo client singleton is `lib/mongodb.js` (plain JS, credentials from env).
 - Filter option values in `app/constants/filters.constants.ts` (e.g. `airconditioning`, `laundryinunit`) must match attribute keys produced by the scraper; `4` is a sentinel meaning "4+" for beds/baths.
