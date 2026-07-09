@@ -1,5 +1,5 @@
 import { ListingCards } from "./listing-cards";
-import { ListingsMap } from "../map";
+import { ListingsMapLazy } from "../map/listings-map-lazy";
 import { HeaderCard } from "./header-card";
 
 export const Listings = () => {
@@ -10,7 +10,7 @@ export const Listings = () => {
         <ListingCards />
       </div>
       <div className="flex grow">
-        <ListingsMap />
+        <ListingsMapLazy />
       </div>
     </div>
   );
