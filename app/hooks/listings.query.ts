@@ -9,7 +9,7 @@ import {
 const getListings = async (filters: TFilters) => {
   const filtersParam = encodeURIComponent(JSON.stringify(filters));
   const uri = `${process.env.NEXT_PUBLIC_API_URI}listings?filters=${filtersParam}`;
-  const resp = await fetch(uri);
+  const resp = await fetch(uri, { cache: "no-store" });
   const result = await resp.json();
   return result;
 };
