@@ -1,8 +1,10 @@
 import type { ListingFeatureCollection, TFilters } from "@/app/_types";
 import { useFiltersStore } from "@/app/store";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-
-const PAGE_SIZE = 10;
+import {
+  getPaginatedListingsFilters,
+  getPaginatedListingsQueryKey,
+} from "./query-keys";
 
 const getListings = async (filters: TFilters) => {
   const filtersParam = encodeURIComponent(JSON.stringify(filters));
@@ -14,13 +16,9 @@ const getListings = async (filters: TFilters) => {
 
 export const usePaginatedListings = () => {
   const filters = useFiltersStore((state) => state.filters);
-  filters.limit = PAGE_SIZE;
   return useQuery<ListingFeatureCollection>({
-    queryKey: [
-      "paginated-listings",
-      encodeURIComponent(JSON.stringify(filters)),
-    ],
-    queryFn: () => getListings(filters),
+    queryKey: getPaginatedListingsQueryKey(filters),
+    queryFn: () => getListings(getPaginatedListingsFilters(filters)),
     placeholderData: keepPreviousData,
   });
 };

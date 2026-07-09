@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { ListingFeatureCollection, TFilters } from "../_types";
+import type { ListingFeatureCollection, TFilters } from "../_types";
 import { useFiltersStore } from "../store";
-import { initialFilterBounds } from "../constants";
+import { getFeaturesFilters, getFeaturesQueryKey } from "./query-keys";
 
 const getFeatures = async (filters: TFilters) => {
   const filtersParam = encodeURIComponent(JSON.stringify(filters));
@@ -12,11 +12,10 @@ const getFeatures = async (filters: TFilters) => {
 };
 
 export const useFeatures = () => {
-  const { limit, skip, ...filters } = useFiltersStore((state) => state.filters);
-  filters.bounds = initialFilterBounds;
+  const filters = useFiltersStore((state) => state.filters);
   return useQuery<ListingFeatureCollection>({
-    queryKey: ["features", encodeURIComponent(JSON.stringify(filters))],
-    queryFn: () => getFeatures(filters),
+    queryKey: getFeaturesQueryKey(filters),
+    queryFn: () => getFeatures(getFeaturesFilters(filters)),
     placeholderData: keepPreviousData,
   });
 };
