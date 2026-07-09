@@ -4,9 +4,11 @@ import type { ListingFeature } from "@/app/_types";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  if (!params.id) {
+  const { id } = await params;
+
+  if (!id) {
     return new Response("Bad Request", {
       status: 400,
     });
@@ -17,7 +19,7 @@ export async function GET(
 
     const data = await db
       .collection("listing-features")
-      .findOne<ListingFeature>({ "properties.listingId": params.id });
+      .findOne<ListingFeature>({ "properties.listingId": id });
 
     if (!data) {
       return new Response("Listing Not Found", {
