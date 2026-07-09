@@ -12,6 +12,9 @@ type GetListingsParams = {
   skip?: number;
 };
 
+// Excludes malformed documents (e.g. bad scraper upserts) missing properties
+const validListingFilter = { "properties.listingId": { $exists: true } };
+
 export const getListingsData = async ({
   filters,
   limit,
@@ -19,14 +22,15 @@ export const getListingsData = async ({
 }: GetListingsParams): Promise<ListingFeatureCollection> => {
   try {
     const db = mongoClient.db(process.env.DB_NAME);
+    const query = { $and: [validListingFilter, filters] };
 
     const totalCount = await db
       .collection("listing-features")
-      .countDocuments(filters);
+      .countDocuments(query);
 
     const data = await db
       .collection("listing-features")
-      .find<ListingFeature>(filters)
+      .find<ListingFeature>(query)
       .sort({ "properties.date": -1 })
       .project({
         _id: 0,
@@ -58,8 +62,9 @@ export const getFeaturesData = async ({ filters }: GetFeaturesParams) => {
 
     const data = await db
       .collection("listing-features")
-      .find<ListingFeature>(filters)
+      .find<ListingFeature>({ $and: [validListingFilter, filters] })
       .project({
+        _id: 0,
         geometry: 1,
         "properties.listingId": 1,
         type: 1,
