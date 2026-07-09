@@ -88,10 +88,25 @@ export const Mapbox = ({ children, loading }: Props) => {
     (e: ViewStateChangeEvent) => {
       if (!map) return;
       const bounds = map.getBounds();
-      if (bounds) updateFilters({ bounds });
+      if (!bounds) return;
+      const { lng: swLng, lat: swLat } = bounds.getSouthWest();
+      const { lng: neLng, lat: neLat } = bounds.getNorthEast();
+      updateFilters({
+        bounds: {
+          _sw: { lng: swLng, lat: swLat },
+          _ne: { lng: neLng, lat: neLat },
+        },
+      });
     },
     [map, updateFilters]
   );
+
+  // tile fetch failures (token limits, transient 403s) surface here and are
+  // recoverable — warn instead of react-map-gl's default console.error so the
+  // dev overlay doesn't flag them as app errors
+  const handleError = useCallback((e: { error?: Error }) => {
+    console.warn("Map error:", e.error?.message ?? e.error);
+  }, []);
 
   const handleMapClick = useCallback(
     (event: MapMouseEvent) => {
@@ -151,11 +166,19 @@ export const Mapbox = ({ children, loading }: Props) => {
   return (
     <MapboxGL
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-      initialViewState={{ bounds: initialViewBounds }}
+      initialViewState={{
+        bounds: [
+          initialViewBounds._sw.lng,
+          initialViewBounds._sw.lat,
+          initialViewBounds._ne.lng,
+          initialViewBounds._ne.lat,
+        ],
+      }}
       style={{ width: "100%", height: "100%" }}
       mapStyle="mapbox://styles/mapbox/streets-v11"
       onMoveEnd={handleMoveEnd}
       onClick={handleMapClick}
+      onError={handleError}
       ref={mapRef}
     >
       {loading && <LoaderOverlay />}
