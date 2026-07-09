@@ -26,8 +26,9 @@ export const ListingPopup = ({ listing, onClose }: Props) => {
       longitude={listing.coordinates[1]}
       latitude={listing.coordinates[0]}
       onClose={onClose}
+      maxWidth="280px"
     >
-      <div className="max-h-[200px] w-[415px] overflow-auto">
+      <div className="max-h-[250px] w-[260px] overflow-auto">
         {listingCards}
       </div>
     </Popup>
@@ -45,5 +46,5 @@ const PopupListingCard = ({ listingId }: { listingId: string }) => {
     );
   if (!listing) return null;
 
-  return <ListingCard listing={listing} />;
+  return <ListingCard listing={listing} compact />;
 };

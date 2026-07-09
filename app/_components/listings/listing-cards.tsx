@@ -32,8 +32,12 @@ export const ListingCards = () => {
 
   return (
     <div className="grid grid-cols-1 gap-3">
-      {features?.map((feature) => (
-        <ListingCard key={feature.properties.listingId} listing={feature} />
+      {features?.map((feature, index) => (
+        <ListingCard
+          key={feature.properties.listingId}
+          listing={feature}
+          priority={index < 3}
+        />
       ))}
       <Card className="p-3 sticky">
         <PaginationControl

@@ -30,8 +30,7 @@ body {
 .mapboxgl-popup-content {
   padding: 0 !important;
   border-radius: 5px !important;
-  width: 316px !important;
-  height: 122px !important;
+  overflow: hidden;
 }
 
 .mapboxgl-popup-close-button {
