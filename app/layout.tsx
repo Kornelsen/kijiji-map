@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const manrope = Manrope({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Kijiji Map",
@@ -19,10 +19,12 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://media.kijiji.ca" />
+        <link rel="preconnect" href="https://api.mapbox.com" />
       </head>
-      <Providers>
-        <body className={inter.className}>{children}</body>
-      </Providers>
+      <body className={manrope.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
